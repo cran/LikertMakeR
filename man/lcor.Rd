@@ -7,7 +7,7 @@
 lcor(data, target)
 }
 \arguments{
-\item{data}{beginning data-frame that is to be rearranged}
+\item{data}{data-frame that is to be rearranged}
 
 \item{target}{target correlation matrix - should be a symmetric
 (square) k*k matrix}
@@ -17,7 +17,7 @@ Returns a data-frame whose column-wise correlations
 approximate a user-specified correlation matrix
 }
 \description{
-\code{lcor()} rearranges values in each column of a
+\code{lcor_C()} rearranges values in each column of a
 data-frame so that columns are correlated to match a predefined
 correlation matrix.
 }
@@ -26,31 +26,25 @@ Values in a column do not change, so univariate
 statistics remain the same.
 }
 \examples{
-
-## generate uncorrelated synthetic data
-
 n <- 32
-x1 <- lfast(n, 3.5, 1.0, 1, 5, 5)
-x2 <- lfast(n, 1.5, 0.75, 1, 5, 5)
-x3 <- lfast(n, 3.0, 2.0, 1, 5, 5)
-
-mydat3 <- cbind(x1, x2, x3) |> data.frame()
-
-cor(mydat3)
-
-## describe a target correlation matrix
+lowerbound <- 1
+upperbound <- 5
+items <- 5
+mydat3 <- data.frame(
+  x1 = lfast(n, 2.5, 0.75, lowerbound, upperbound, items),
+  x2 = lfast(n, 3.0, 1.50, lowerbound, upperbound, items),
+  x3 = lfast(n, 3.5, 1.00, lowerbound, upperbound, items)
+)
+cor(mydat3) |> round(3)
 tgt3 <- matrix(
   c(
     1.00, 0.50, 0.75,
     0.50, 1.00, 0.25,
     0.75, 0.25, 1.00
-  ),
-  nrow = 3
+    ),
+  nrow = 3, ncol = 3
 )
-
-## apply lcor function
 new3 <- lcor(mydat3, tgt3)
-
 cor(new3) |> round(3)
 
 }
