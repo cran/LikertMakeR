@@ -1,3 +1,39 @@
+
+
+# LikertMakeR 0.3.0 (2024-05-18)
+
+## more randomness in swaps task to makeCorrAlpha() function
+
+correlation matrix usually has values sorted lowest to highest. This happens less often 
+
+
+
+# LikertMakeR 0.2.6 (2024-05-11)
+
+## added 'precision' parameter to makeCorrAlpha() function
+
+'precision' adds random variation around the target Cronbach's Alpha. Default = '0' (no variation giving Alpha exact to two decimal places)
+
+
+
+
+# LikertMakeR 0.2.5 (2024-04-20)
+
+## added correlateScales() function
+
+Create a dataframe of correlated scales  from different dataframes of scale items
+
+
+
+# LikertMakeR 0.2.2 (2024-03-31)
+
+## added makeItemsScale() function
+
+Generate rating-scale items from a given summated scale
+
+
+
+
 # LikertMakeR 0.2.0 (2024-03-02)
 
 ## For submission to CRAN

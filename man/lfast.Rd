@@ -2,46 +2,61 @@
 % Please edit documentation in R/lfast.R
 \name{lfast}
 \alias{lfast}
-\title{Rating scale data (e.g. Likert scale) from a Scaled Beta Distribution}
+\title{Synthesise rating-scale data with predefined mean and standard deviation}
 \usage{
-lfast(n, mean, sd, lowerbound, upperbound, items = 1)
+lfast(n, mean, sd, lowerbound, upperbound, items = 1, precision = 0)
 }
 \arguments{
 \item{n}{(positive, int) number of observations to generate}
 
-\item{mean}{(real) target mean}
+\item{mean}{(real) target mean, between upper and lower bounds}
 
-\item{sd}{(real) target standard deviation}
+\item{sd}{(positive, real) target standard deviation}
 
 \item{lowerbound}{(positive, int) lower bound (e.g. '1' for a 1-5 rating scale)}
 
 \item{upperbound}{(positive, int) upper bound (e.g. '5' for a 1-5 rating scale)}
 
 \item{items}{(positive, int) number of items in the rating scale. Default = 1}
+
+\item{precision}{(positive, real) can relax the level of accuracy required. (e.g. '1' generally generates a vector with moments correct within '0.025', '2' generally within '0.05') Default = 0}
 }
 \value{
-a vector of simulated data approximating user-specified conditions.
+a vector approximating user-specified conditions.
 }
 \description{
+\code{lfast()} applies a simple Evolutionary Algorithm to
+find a vector that best fits the desired moments.
+
 \code{lfast()} generates random discrete values from a
-(scaled Beta distribution) so the data replicate a rating scale -
-for example,a 1-5 scale made from 5 items (questions) or 0-10
+scaled Beta distribution so the data replicate a rating scale -
+for example, a 1-5 Likert scale made from 5 items (questions) or 0-10
 likelihood-of-purchase scale.
-\code{lfast()} takes repeated samples selecting a vector that best
-fits the desired moments, while \code{lfast()} takes just one sample.
-\code{lfast()} is slightly slower than \code{lfast()}.
 }
 \examples{
 
+## six-item 1-7 rating scale
 x <- lfast(
   n = 256,
   mean = 4.0,
-  sd = 1.0,
+  sd = 1.25,
   lowerbound = 1,
   upperbound = 7,
   items = 6
 )
 
-x <- lfast(256, 2, 1.8, 0, 10)
+## four-item 1-5 rating scale with medium variation
+x <- lfast(
+  n = 128,
+  mean = 3.0,
+  sd = 1.00,
+  lowerbound = 1,
+  upperbound = 5,
+  items = 4,
+  precision = 5
+)
+
+## eleven-point 'likelihood of purchase' scale
+x <- lfast(256, 3, 3.0, 0, 10)
 
 }

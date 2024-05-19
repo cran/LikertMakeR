@@ -14,10 +14,10 @@
 #'
 #' ## Sample data frame
 #' df <- data.frame(
-#' V1  =  c(4, 2, 4, 3, 2, 2, 2, 1),
-#' V2  =  c(4, 1, 3, 4, 4, 3, 2, 3),
-#' V3  =  c(4, 1, 3, 5, 4, 1, 4, 2),
-#' V4  =  c(4, 3, 4, 5, 3, 3, 3, 3)
+#'   V1  =  c(4, 2, 4, 3, 2, 2, 2, 1),
+#'   V2  =  c(4, 1, 3, 4, 4, 3, 2, 3),
+#'   V3  =  c(4, 1, 3, 5, 4, 1, 4, 2),
+#'   V4  =  c(4, 3, 4, 5, 3, 3, 3, 3)
 #' )
 #'
 #' ## example correlation matrix
@@ -49,7 +49,7 @@ alpha <- function(cormatrix = NULL, data = NULL) {
       cormatrix <- cor(data)
     } else {
       if (!is.null(cormatrix) && !is.null(data)) {
-        message("Warning: Both cormatrix and data present.
+        message("Alert: \nBoth cormatrix and data present.
                 \nUsing cormatrix by default.")
       }
     }

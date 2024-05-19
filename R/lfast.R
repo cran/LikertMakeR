@@ -1,22 +1,27 @@
-#' Rating scale data (e.g. Likert scale) from a Scaled Beta Distribution
+#' Synthesise rating-scale data with predefined mean and standard deviation
+#'
 #' @name lfast
-#' @description \code{lfast()} generates random discrete values from a
-#' (scaled Beta distribution) so the data replicate a rating scale -
-#' for example,a 1-5 scale made from 5 items (questions) or 0-10
+#'
+#' @description \code{lfast()} applies a simple Evolutionary Algorithm to
+#' find a vector that best fits the desired moments.
+#'
+#' \code{lfast()} generates random discrete values from a
+#' scaled Beta distribution so the data replicate a rating scale -
+#' for example, a 1-5 Likert scale made from 5 items (questions) or 0-10
 #' likelihood-of-purchase scale.
-#' \code{lfast()} takes repeated samples selecting a vector that best
-#' fits the desired moments, while \code{lfast()} takes just one sample.
-#' \code{lfast()} is slightly slower than \code{lfast()}.
+#'
 #'
 #'
 #' @param n (positive, int) number of observations to generate
-#' @param mean (real) target mean
-#' @param sd  (real) target standard deviation
+#' @param mean (real) target mean, between upper and lower bounds
+#' @param sd  (positive, real) target standard deviation
 #' @param lowerbound (positive, int) lower bound (e.g. '1' for a 1-5 rating scale)
 #' @param upperbound (positive, int) upper bound (e.g. '5' for a 1-5 rating scale)
 #' @param items (positive, int) number of items in the rating scale. Default = 1
+#' @param precision (positive, real) can relax the level of accuracy required. (e.g. '1' generally generates a vector with moments correct within '0.025', '2' generally within '0.05') Default = 0
 #'
-#' @return a vector of simulated data approximating user-specified conditions.
+#'
+#' @return a vector approximating user-specified conditions.
 #'
 #' @importFrom stats rbeta
 #'
@@ -24,18 +29,33 @@
 #'
 #' @examples
 #'
+#' ## six-item 1-7 rating scale
 #' x <- lfast(
 #'   n = 256,
 #'   mean = 4.0,
-#'   sd = 1.0,
+#'   sd = 1.25,
 #'   lowerbound = 1,
 #'   upperbound = 7,
 #'   items = 6
 #' )
 #'
-#' x <- lfast(256, 2, 1.8, 0, 10)
+#' ## four-item 1-5 rating scale with medium variation
+#' x <- lfast(
+#'   n = 128,
+#'   mean = 3.0,
+#'   sd = 1.00,
+#'   lowerbound = 1,
+#'   upperbound = 5,
+#'   items = 4,
+#'   precision = 5
+#' )
 #'
-lfast <- function(n, mean, sd, lowerbound, upperbound, items = 1) {
+#' ## eleven-point 'likelihood of purchase' scale
+#' x <- lfast(256, 3, 3.0, 0, 10)
+#'
+lfast <- function(n, mean, sd, lowerbound, upperbound, items = 1, precision = 0) {
+  tolerance <- 0.0025 * 2^precision
+
   range <- upperbound - lowerbound
   m <- (mean - lowerbound) / range ## rescale mean
   s <- sd / range ## rescale sd
@@ -46,17 +66,17 @@ lfast <- function(n, mean, sd, lowerbound, upperbound, items = 1) {
   }
   if (sd >= range * 0.6) {
     warning("Standard Deviation is large relative to range
-            \nDerived SD will be less than specified
+            \nDerived SD may be less than specified
             \nOr the solution is not feasible, producing 'NA' values")
   }
 
-  a <- (m^2 - m^3 - m * s^2) / s^2                ## alpha shape parameter
-  b <- (m - 2 * m^2 + m^3 - s^2 + m * s^2) / s^2  ## beta shape parameter
+  a <- (m^2 - m^3 - m * s^2) / s^2 ## alpha shape parameter
+  b <- (m - 2 * m^2 + m^3 - s^2 + m * s^2) / s^2 ## beta shape parameter
 
 
-  best_value <- 1e+5          ## set high value to start
+  best_value <- 1e+5 ## set high value to start
   best_vector <- rep(1e+5, n) ## set high value to start
-  maxiter <- max(1024, n^2)   ## at least 2^10 iterations
+  maxiter <- max(1024, n^2) ## at least 2^10 iterations
 
   for (i in 1:maxiter) {
     ## generate data with range 0-1 as Beta distribution
@@ -78,11 +98,18 @@ lfast <- function(n, mean, sd, lowerbound, upperbound, items = 1) {
     }
 
     ## tolerance ensures both mean and sd accurate to 2 decimal places
-    if (best_value < 0.0025) {
+    if (best_value < tolerance) {
       break
     }
   }
-  print(paste0("best solution in ", i, " iterations"))
+
+  ## print iterations reached
+  if (i == maxiter) {
+    print(paste0("reached maximum of ", i, " iterations"))
+  } else {
+    print(paste0("best solution in ", i, " iterations"))
+  }
+
+  # print(paste0("best solution in ", i, " iterations"))
   return(best_vector)
 }
-

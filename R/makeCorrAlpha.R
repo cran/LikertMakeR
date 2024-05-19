@@ -1,15 +1,21 @@
-#' Construct a random correlation matrix of given dimensions from predefined Cronbach's Alpha
+#' Correlation matrix from Cronbach's Alpha
 #'
 #' @name makeCorrAlpha
+#'
 #' @description \code{makeCorrAlpha()} generates a random correlation
 #'  matrix of given dimensions and predefined Cronbach's Alpha
 #'
-#' @param items (positive, int) number of rows & columns to generate
+#' @param items (positive, int) matrix dimensions: number of rows & columns to generate
 #' @param alpha (real) target Cronbach's Alpha
 #'  (usually positive, must be between -1 and +1)
 #' @param variance (positive, real) Default = 0.5.
 #'  User-provided standard deviation of values sampled from a
 #'  normally-distributed log transformation.
+#' @param precision (positive, real) Default = 0.
+#'  User-defined value ranging from '0' to '3' to add some random variation
+#'  around the target Cronbach's Alpha.
+#'  '0' gives an exact alpha (to two decimal places)
+#'
 #'
 #' @importFrom stats rnorm
 #'
@@ -35,30 +41,39 @@
 #'
 #' @examples
 #'
+#' # define parameters
 #' items <- 4
 #' alpha <- 0.85
 #' variance <- 0.5
 #'
+#' # apply function
 #' set.seed(42)
-#' cor_matrix <- makeCorrAlpha(items, alpha, variance)
+#' cor_matrix <- makeCorrAlpha(items = items, alpha = alpha, variance = variance)
 #'
+#' # test function output
 #' print(cor_matrix)
 #' alpha(cor_matrix)
-#' eigenvalues(cor_matrix,1)
+#' eigenvalues(cor_matrix, 1)
 #'
-#' cor_matrix2 <- makeCorrAlpha(items = 6, alpha = 0.95)
+#' # higher alpha, more items
+#' cor_matrix2 <- makeCorrAlpha(items = 8, alpha = 0.95)
 #'
-#' print(cor_matrix2)
-#' alpha(cor_matrix2)
-#' eigenvalues(cor_matrix2,1)
+#' # test output
+#' cor_matrix2 |> round(2)
+#' alpha(cor_matrix2) |> round(3)
+#' eigenvalues(cor_matrix2, 1) |> round(3)
 #'
 #'
-makeCorrAlpha <- function(items, alpha, variance = 0.5) {
-  k <- items
-
-  # Calculate the mean correlation coefficient from alpha
-  mean_r <- alpha / (k - alpha * (k - 1))
-
+#' # large random variation around alpha
+#' set.seed(42)
+#' cor_matrix3 <- makeCorrAlpha(items = 6, alpha = 0.85, precision = 2)
+#'
+#' # test output
+#' cor_matrix3 |> round(2)
+#' alpha(cor_matrix3) |> round(3)
+#' eigenvalues(cor_matrix3, 1) |> round(3)
+#'
+makeCorrAlpha <- function(items, alpha, variance = 0.5, precision = 0) {
   ####
   ###  Helper functions
 
@@ -109,8 +124,14 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5) {
   ## rearrange correlation values to find a possible positive definite matrix
   improve_cor_matrix <- function() {
     n_swap <- length(random_cors)
-    swap_candidates <- expand.grid(r1 = 1:n_swap, r2 = 1:n_swap)
+    swaps <- c(1:n_swap)
+    swaps <- sample(swaps, n_swap, replace = FALSE)
+
+    swap_candidates <- expand.grid(r1 = swaps, r2 = swaps)
     swap_candidates <- swap_candidates[swap_candidates[, 1] != swap_candidates[, 2], ]
+
+    ## delete this line!
+    # swap_candidates <- swap_candidates[order(nrow(swap_candidates):1),]
 
     current_vector <- random_cors
     n_swap_candidates <- nrow(swap_candidates)
@@ -156,21 +177,42 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5) {
         current_vector[j] <- jj
       }
 
-      is_positive_definite <- min(best_eigen_values) >= 0
-      if (is_positive_definite) {
+      # is_positive_definite <- min(best_eigen_values) >= 0
+
+      if (min(best_eigen_values) >= 0) {
         cat(paste0("stopped at swap - ", r, "\n"))
         break
       }
     } ## end swap values in the correlation matrix loop
-    ###
 
     return(best_matrix)
   } ### end improve_cor_matrix Function
   ### end helper functions
 
+  k <- items
+
+  if (precision < 0) {
+    precision <- 0
+  }
+  if (precision > 3) {
+    precision <- 3
+  }
+
+
+  ## Calculate the mean correlation coefficient from alpha
+
+  target_mean_r <- alpha / (k - alpha * (k - 1))
+
+  ## add some random variation to the target mean correlation
+  logr_sd_coefficient <- 2^(2^(4 / (precision + 1)))
+  logr_sd <- 1 / logr_sd_coefficient
+
+  log_transformed_r <- log_transform((target_mean_r) + rnorm(1, 0, logr_sd))
+  mean_r <- exp_transform(log_transformed_r)
+
   ###  set up for correlation values search
   ## translate correlation (-1 to +1) into continuous variable (-inf to +inf)
-  log_transformed_r <- log_transform(mean_r)
+  # log_transformed_r <- log_transform(mean_r)
   tolerance <- 1e-5
 
   current_mean_cors <- 0
@@ -222,10 +264,9 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5) {
   if (min(eigen(cor_matrix)$values) >= 0) {
     cat("The correlation matrix is positive definite\n")
   } else {
-    cat("The correlation matrix is NOT positive definite
-        \nTry running again (or reduce the Variance parameter)\n")
+    cat("Correlation matrix is NOT positive definite
+        \nTry running again (or reduce Variance parameter)\n")
   }
 
   return(cor_matrix)
 } ## end matrixFromAlpha function
-
