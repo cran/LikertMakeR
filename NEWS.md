@@ -1,4 +1,14 @@
 
+# LikertMakeR 0.4.0 (2024-11-17)
+
+## target Cronbach's Alpha added to makeItemsScale() function 
+
+generated scale items now defined by a target Cronbach's Alpha, 
+as well as by variance within each scale item.
+This latest version adds a little randomness to the selection of 
+candidate row vectors.
+
+
 
 # LikertMakeR 0.3.0 (2024-05-18)
 
