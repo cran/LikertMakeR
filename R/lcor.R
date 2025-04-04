@@ -1,11 +1,12 @@
-#' Rearrange columns in a data-frame to fit a predefined correlation matrix
+#' Rearrange elements in each column of a data-frame to fit a
+#' predefined correlation matrix
 #'
 #' @name lcor
 #'
 #' @useDynLib LikertMakeR
 #'
 #' @importFrom Rcpp sourceCpp
-NULL
+#'
 #' @description \code{lcor_C()} rearranges values in each column of a
 #' data-frame so that columns are correlated to match a predefined
 #' correlation matrix.
@@ -14,6 +15,7 @@ NULL
 #' statistics remain the same.
 #'
 #' @param data data-frame that is to be rearranged
+#'
 #' @param target target correlation matrix - should be a symmetric
 #' k*k positive-semi-definite matrix
 #'

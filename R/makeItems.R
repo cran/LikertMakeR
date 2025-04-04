@@ -1,5 +1,5 @@
-#' Synthetic rating-scale data with given
-#'  first and second moments and a predefined correlation matrix
+#' Synthesise rating-scale data with given first and second moments and a
+#' predefined correlation matrix
 #'
 #' @name makeItems
 #'
@@ -53,6 +53,10 @@
 #'   nrow = 4, ncol = 4
 #' )
 #'
+#' item_names <- c("Q1", "Q2", "Q3", "Q4")
+#' rownames(corMat) <- item_names
+#' colnames(corMat) <- item_names
+#'
 #' ## apply function
 #'
 #' df <- makeItems(
@@ -81,7 +85,7 @@ makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
   ## round correlation values to sensible values
   cormatrix <- cormatrix |> round(5)
 
-  { ## BEGIN input parameters integrity
+  parameter_integrity <- function() { ## BEGIN input parameters integrity
     if (length(upperbound) != length(lowerbound) ||
       length(upperbound) != ncol(cormatrix) ||
       length(lowerbound) != ncol(cormatrix) ||
@@ -94,8 +98,9 @@ makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
       return(NULL)
     }
   } ## END input parameters integrity
+
   ####
-  { ## BEGIN check positive definite matrix
+  check_PD_matrix <- function() { ## BEGIN check positive definite matrix
     if (min(eigen(cormatrix)$values) < 0) {
       stop("ERROR:\ncormatrix is not Positive Definite.
          \nRequested correlations are not possible \n")
@@ -105,10 +110,15 @@ makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
   ## end integrity checks
   ####
 
+  parameter_integrity
+  check_PD_matrix
+
   ###   combine lfast() and lcor()
   ####
 
   k <- ncol(cormatrix)
+
+  item_names <- rownames(cormatrix)
 
   # Initialize the dataframe
   df <- as.data.frame(matrix(nrow = n, ncol = k))
@@ -123,8 +133,10 @@ makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
   new_df <- lcor(df, cormatrix)
 
   if (exists("new_df")) {
-    cat(paste0("\nSuccessfully generated correlated variables\n"))
+    cat(paste0("\nSuccessfully generated correlated variables\n\n"))
   }
+
+  colnames(new_df) <- item_names
 
   return(new_df)
 } ### END make_items function

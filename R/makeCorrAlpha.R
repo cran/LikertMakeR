@@ -3,17 +3,21 @@
 #' @name makeCorrAlpha
 #'
 #' @description \code{makeCorrAlpha()} generates a random correlation
-#'  matrix of given dimensions and predefined Cronbach's Alpha
+#'  matrix of given dimensions and predefined _Cronbach's Alpha_.
 #'
-#' @param items (positive, int) matrix dimensions: number of rows & columns to generate
+#' Such a correlation matrix can be applied to the \code{makeItems()}
+#' function to generate synthetic data with the predefined alpha.
+#'
+#' @param items (positive, int) matrix dimensions:
+#'  number of rows & columns to generate
 #' @param alpha (real) target Cronbach's Alpha
-#'  (usually positive, must be between -1 and +1)
+#'  (usually positive, must be between about -0.3 and +1)
 #' @param variance (positive, real) Default = 0.5.
 #'  User-provided standard deviation of values sampled from a
 #'  normally-distributed log transformation.
 #' @param precision (positive, real) Default = 0.
 #'  User-defined value ranging from '0' to '3' to add some random variation
-#'  around the target Cronbach's Alpha.
+#'  around the target _Cronbach's Alpha_.
 #'  '0' gives an exact alpha (to two decimal places)
 #'
 #'
@@ -87,7 +91,7 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5, precision = 0) {
   ## formula: y = log((1 + x) / (1 - x))
   log_transform <- function(x) {
     result <- log((1 + x) / (1 - x))
-    return(result)
+    # return(result)
   } ## end log_transform function
 
   ###
@@ -98,7 +102,7 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5, precision = 0) {
   ## formula: x = (e^y - 1) / (e^y + 1)
   exp_transform <- function(y) {
     x <- (exp(y) - 1) / (exp(y) + 1)
-    return(x)
+    # return(x)
   } ## END exp_transform function
 
 
@@ -235,7 +239,10 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5, precision = 0) {
     }
     # Check if the current mean is close to the target mean
     if (abs(current_mean_cors - mean_r) < tolerance) {
-      cat(paste0("correlation values consistent with desired alpha in ", iteration, " iterations\n"))
+      cat(paste0(
+        "correlation values consistent with desired alpha in ",
+        iteration, " iterations\n"
+      ))
       break
     }
   } ## END find means loop
@@ -255,14 +262,14 @@ makeCorrAlpha <- function(items, alpha, variance = 0.5, precision = 0) {
   ## If not positive definite then reorder correlations
   if (is_positive_definite == FALSE) {
     cat("Correlation matrix is not yet positive definite
-        \nWorking on it\n")
+        \nWorking on it\n\n")
     cor_matrix <- improve_cor_matrix()
   }
 
   ####
   ## report positive definite status
   if (min(eigen(cor_matrix)$values) >= 0) {
-    cat("The correlation matrix is positive definite\n")
+    cat("The correlation matrix is positive definite\n\n")
   } else {
     cat("Correlation matrix is NOT positive definite
         \nTry running again (or reduce Variance parameter)\n")

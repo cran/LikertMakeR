@@ -2,8 +2,8 @@
 % Please edit documentation in R/makeItems.R
 \name{makeItems}
 \alias{makeItems}
-\title{Synthetic rating-scale data with given
-first and second moments and a predefined correlation matrix}
+\title{Synthesise rating-scale data with given first and second moments and a
+predefined correlation matrix}
 \usage{
 makeItems(n, means, sds, lowerbound, upperbound, cormatrix)
 }
@@ -63,6 +63,10 @@ corMat <- matrix(
   ),
   nrow = 4, ncol = 4
 )
+
+item_names <- c("Q1", "Q2", "Q3", "Q4")
+rownames(corMat) <- item_names
+colnames(corMat) <- item_names
 
 ## apply function
 
