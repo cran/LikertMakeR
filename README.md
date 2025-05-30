@@ -6,13 +6,14 @@
 [![metacran downloads total](https://cranlogs.r-pkg.org/badges/grand-total/LikertMakeR)](https://cran.r-project.org/package=LikertMakeR)
 [![metacran downloads last month](https://cranlogs.r-pkg.org/badges/last-month/LikertMakeR)](https://cran.r-project.org/package=LikertMakeR)
 [![R-CMD-check](https://github.com/WinzarH/LikertMakeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/WinzarH/LikertMakeR/actions/workflows/R-CMD-check.yaml)
+[![Pkgdown](https://github.com/WinzarH/LikertMakeR/actions/workflows/pkgdown.yaml/badge.svg)](https://winzarh.github.io/LikertMakeR/)
   <!-- badges: end -->
 
 # LikertMakeR <img src="man/figures/logo.png" align="center" height="134" alt="LikertMakeR" />
 
-(V 1.0.0  April 2025)
+(V 1.1.0  May 2025)
 
-Synthesise and correlate Likert scale and similar rating-scale data with 
+Synthesise and correlate Likert scales, and similar rating-scale data, with 
 predefined first & second moments (mean and standard deviation), 
 _Cronbach's Alpha_, _Factor Loadings_, and other summary statistics. 
  
@@ -101,8 +102,10 @@ summed range between 8 (all rated ‘1’) and 56 (all rated ‘7’) with
 all integers in between, and the mean range will be ‘1’ to ‘7’ with 
 intervals of 1/8=0.125.
 
-Technically, because Likert scales, and similar rating scales are bounded with 
-discrete intervals, parametric statistics _(such as mean, standard deviation, and correlation)_ should not be applied to summated rating scales. 
+Technically, because Likert scales, and similar rating scales are bounded 
+with discrete intervals, parametric statistics 
+_(such as mean, standard deviation, and correlation)_ should not be applied 
+to summated rating scales. 
 In practice, however, such parametric statistics are commonly used in the 
 social sciences because:
 
@@ -114,6 +117,15 @@ social sciences because:
 [D'Alessandro _et al._ (2020)](https://cengage.com.au/sem121/marketing-research-5th-edition-dalessandro-babin-zikmund) 
 argue that a summated scale, made with multiple items, "approaches" an 
 interval scale measure.
+
+Likert-scale items, such as responses to a single 1-to-5 agree-disagree 
+question, should not be analysed by professional or responsible researchers. 
+There is too much random error in a single item. 
+[Rensis Likert (1932)](https://archive.org/details/likert-1932/mode/2up) 
+designed the scale with the logic that a random overstatement on one item 
+is likely to be compensated by a random understatement on another 
+item, so that, when multiple items are combined, we get a reasonably 
+consistent, internally reliable, measure of the target construct.
 
 #### Alternative approaches to synthesising scales
 
@@ -148,7 +160,6 @@ summative scale and desired _Cronbach's Alpha_.
 `correlateScales()` generates a multidimensional dataframe by combining several
 dataframes of rating-scale items so that their summated scales are correlated 
 according to a predefined correlation matrix.
-
 
 ## Install _LikertMakeR_
 
@@ -755,7 +766,7 @@ Paired t-tests apply to observations that are associated with each other. For ex
     ) |> t()
     pairedMoments
     
-    t.test(pairedDat$V1, pairedDat$V2, paired = TRUE)
+    t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
 
 ___
 

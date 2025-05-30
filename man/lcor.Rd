@@ -5,20 +5,24 @@
 \title{Rearrange elements in each column of a data-frame to fit a
 predefined correlation matrix}
 \usage{
-lcor(data, target)
+lcor(data, target, passes = 10)
 }
 \arguments{
 \item{data}{data-frame that is to be rearranged}
 
 \item{target}{target correlation matrix - should be a symmetric
 k*k positive-semi-definite matrix}
+
+\item{passes}{Number of optimization passes (default = 10)
+Increasing this value \emph{MAY} improve results if n-columns
+(target correlation matrix dimensions) are many.}
 }
 \value{
 Returns a dataframe whose column-wise correlations
 approximate a user-specified correlation matrix
 }
 \description{
-\code{lcor_C()} rearranges values in each column of a
+\code{lcor()} rearranges values in each column of a
 data-frame so that columns are correlated to match a predefined
 correlation matrix.
 }

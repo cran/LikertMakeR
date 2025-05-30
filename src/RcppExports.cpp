@@ -11,21 +11,22 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// lcor_C
-DataFrame lcor_C(DataFrame data_df, NumericMatrix target);
-RcppExport SEXP _LikertMakeR_lcor_C(SEXP data_dfSEXP, SEXP targetSEXP) {
+// lcor_C_randomised
+SEXP lcor_C_randomised(DataFrame data_df, NumericMatrix target, int passes);
+RcppExport SEXP _LikertMakeR_lcor_C_randomised(SEXP data_dfSEXP, SEXP targetSEXP, SEXP passesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type data_df(data_dfSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type target(targetSEXP);
-    rcpp_result_gen = Rcpp::wrap(lcor_C(data_df, target));
+    Rcpp::traits::input_parameter< int >::type passes(passesSEXP);
+    rcpp_result_gen = Rcpp::wrap(lcor_C_randomised(data_df, target, passes));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_LikertMakeR_lcor_C", (DL_FUNC) &_LikertMakeR_lcor_C, 2},
+    {"_LikertMakeR_lcor_C_randomised", (DL_FUNC) &_LikertMakeR_lcor_C_randomised, 3},
     {NULL, NULL, 0}
 };
 

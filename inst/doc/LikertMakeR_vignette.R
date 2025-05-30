@@ -1,10 +1,10 @@
-## ----setup, include = FALSE---------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
 
+## ----setup--------------------------------------------------------------------
 library(LikertMakeR)
 
 ## ----logo, fig.align='center', echo=FALSE, out.width = '25%'------------------
@@ -140,6 +140,61 @@ alpha(cor_matrix_12)
 
 ## calculate eigenvalues of the correlation matrix
 eigenvalues(cor_matrix_12, 1) |> round(3)
+
+## ----parameters_makeCorrLoadings, echo=TRUE-----------------------------------
+## Example loadings
+
+factorLoadings <- matrix(
+  c(
+    0.05, 0.20, 0.70,
+    0.10, 0.05, 0.80,
+    0.05, 0.15, 0.85,
+    0.20, 0.85, 0.15,
+    0.05, 0.85, 0.10,
+    0.10, 0.90, 0.05,
+    0.90, 0.15, 0.05,
+    0.80, 0.10, 0.10
+  ),
+  nrow = 8, ncol = 3, byrow = TRUE
+)
+
+## row and column names
+
+rownames(factorLoadings) <- c("Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8")
+colnames(factorLoadings) <- c("Factor1", "Factor2", "Factor3")
+
+## Factor correlation matrix**
+
+factorCor <- matrix(
+  c(
+    1.0,  0.5, 0.4,
+    0.5,  1.0, 0.3,
+    0.4,  0.3, 1.0
+  ),
+  nrow = 3, byrow = TRUE
+)
+
+## ----apply_makeCorrLoadings, echo=TRUE----------------------------------------
+## apply makeCorrLoadings() function
+itemCorrelations <- makeCorrLoadings(factorLoadings, factorCor)
+
+## derived correlation matrix to two decimal places
+round(itemCorrelations, 2)
+
+## ----test_makeCorrLoadings, echo=TRUE-----------------------------------------
+## correlated factors mean that eigenvalues should suggest two or three factors
+eigenvalues(cormatrix = itemCorrelations, scree = TRUE)
+
+## ----orthogonal_makeCorrLoadings, echo=TRUE-----------------------------------
+## orthogonal factors are assumed when factor correlation matrix is not included
+orthogonalItemCors <- makeCorrLoadings(factorLoadings)
+
+## derived correlation matrix to two decimal places
+round(orthogonalItemCors, 2)
+
+## ----test_orthogonal, echo=TRUE-----------------------------------------------
+## eigenvalues should suggest exactly  three factors
+eigenvalues(cormatrix = orthogonalItemCors, scree = TRUE)
 
 ## ----makeItemsExample---------------------------------------------------------
 ## define parameters
@@ -413,7 +468,7 @@ pairedMoments
 
 ## ----paired-sample_t-test, echo=TRUE------------------------------------------
 ## run a paired-sample t-test
-paired_t <- t.test(pairedDat$V1, pairedDat$V2, paired = TRUE)
+paired_t <- t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
 
 paired_t
 
