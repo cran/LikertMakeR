@@ -8,14 +8,15 @@ predefined correlation matrix}
 lcor(data, target, passes = 10)
 }
 \arguments{
-\item{data}{data-frame that is to be rearranged}
+\item{data}{dataframe that is to be rearranged}
 
-\item{target}{target correlation matrix - should be a symmetric
-k*k positive-semi-definite matrix}
+\item{target}{target correlation matrix.
+Must have same dimensions as number of columns in data-frame.}
 
-\item{passes}{Number of optimization passes (default = 10)
+\item{passes}{Number of optimization passes (default = 10).
 Increasing this value \emph{MAY} improve results if n-columns
-(target correlation matrix dimensions) are many.}
+(target correlation matrix dimensions) are many.
+Decreasing the value for 'passes' is faster but may decrease accuracy.}
 }
 \value{
 Returns a dataframe whose column-wise correlations

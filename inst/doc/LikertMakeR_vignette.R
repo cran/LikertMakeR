@@ -8,10 +8,10 @@ knitr::opts_chunk$set(
 library(LikertMakeR)
 
 ## ----logo, fig.align='center', echo=FALSE, out.width = '25%'------------------
-knitr::include_graphics("LikertMakeR_3.png")
+knitr::include_graphics("img/LikertMakeR_3.png")
 
 ## ----skew, fig.align='center', echo=FALSE, out.width = '85%', fig.cap="Off-centre means always give skewed distribution in bounded rating scales"----
-knitr::include_graphics("skew_chart.png")
+knitr::include_graphics("img/skew_chart.png")
 
 ## ----lfastExample-------------------------------------------------------------
 nItems <- 4
@@ -27,8 +27,9 @@ x1 <- lfast(
   items = nItems
 )
 
-## ----fig1, fig.height=3, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: 4-item, 1-5 Likert scale"----
+## ----fig1, fig.height=4, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: 4-item, 1-5 Likert scale"----
 ## distribution of x
+
 hist(x1,
   cex.axis = 0.5, cex.main = 0.75,
   breaks = seq(from = (1 - (1 / 8)), to = (5 + (1 / 8)), by = (1 / 4)),
@@ -39,8 +40,9 @@ hist(x1,
 ## ----lfastx2------------------------------------------------------------------
 x2 <- lfast(256, 3, 2.5, 0, 10)
 
-## ----fig2, fig.height=3, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: likelihood-of-purchase scale"----
+## ----fig2, fig.height=4, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: likelihood-of-purchase scale"----
 ## generate histogram
+
 hist(x2,
   cex.axis = 0.5, cex.main = 0.75,
   breaks = seq(from = -0.5, to = 10.5, by = 1),
@@ -115,7 +117,7 @@ cor_matrix_4 |> round(3)
 
 alpha(cor_matrix_4)
 
-## ----fig3, fig.height=3, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
+## ----fig3, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
 ## using helper function eigenvalues()
 
 eigenvalues(cor_matrix_4, 1)
@@ -134,7 +136,7 @@ cor_matrix_12 <- makeCorrAlpha(items = items, alpha = alpha, variance = variance
 ## ----cor_matrix_12Print, echo = FALSE-----------------------------------------
 cor_matrix_12 |> round(2)
 
-## ----fig4, fig.height=3, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
+## ----fig4, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
 ## calculate Cronbach's Alpha
 alpha(cor_matrix_12)
 
@@ -269,7 +271,7 @@ myItems <- makeItems(
   cormatrix = myCorr
 )
 
-## resulting data frame
+## resulting dataframe
 head(myItems)
 tail(myItems)
 
@@ -280,11 +282,12 @@ myMoments <- data.frame(
 ) |> t()
 myMoments
 
-## Cronbach's Alpha of data frame
+## Cronbach's Alpha of dataframe
 alpha(NULL, myItems)
 
 ## ----fig5, fig.height=5, fig.width=5, fig.align='center', echo=FALSE, warning=FALSE, crop = TRUE, fig.cap="Summary of dataframe from makeItems() function"----
 # Correlation panel
+
 panel.cor <- function(x, y) {
   usr <- par("usr")
   on.exit(par(usr))
@@ -294,11 +297,15 @@ panel.cor <- function(x, y) {
   cex.cor <- 0.8 / strwidth(txt)
   text(0.5, 0.5, txt, cex = 1.25)
 }
+
 # Customize upper panel
+
 upper.panel <- function(x, y) {
   points(x, y, pch = 19, col = "#0000ff11")
 }
+
 # diagonals
+
 panel.hist <- function(x, ...) {
   usr <- par("usr")
   on.exit(par(usr))
@@ -310,7 +317,9 @@ panel.hist <- function(x, ...) {
   y <- y / max(y)
   rect(breaks[-nB], 0, breaks[-1], y, col = "#87ceeb66")
 }
+
 # Create the plots
+
 pairs(myItems,
   lower.panel = panel.cor,
   upper.panel = upper.panel,
@@ -336,8 +345,9 @@ meanScale <- lfast(
 ## sum over all items
 summatedScale <- meanScale * items
 
-## ----summatedScale_histogram, echo=FALSE, fig.height=3, fig.width=5, fig.align='center', crop = TRUE, fig.cap="Summated scale distribution"----
+## ----summatedScale_histogram, echo=FALSE, fig.height=4, fig.width=5, fig.align='center', crop = TRUE, fig.cap="Summated scale distribution"----
 ## Histogram of summated scale
+
 hist(summatedScale,
   cex.axis = 0.5, cex.main = 0.75,
   breaks = seq(
@@ -351,8 +361,9 @@ hist(summatedScale,
   )
 )
 
-## ----makeItemsScale_example_1, fig.height=3, fig.width=5, fig.align='center', crop = TRUE----
+## ----makeItemsScale_example_1, fig.height=4, fig.width=5, fig.align='center', crop = TRUE----
 ## apply makeItemsScale() function
+
 newItems_1 <- makeItemsScale(
   scale = summatedScale,
   lowerbound = lowerbound,
@@ -372,7 +383,7 @@ alpha(data = newItems_1) |> round(4)
 ### calculate eigenvalues and print scree plot
 eigenvalues(cor(newItems_1), 1) |> round(3)
 
-## ----makeItemsScale_example_2, fig.height=3, fig.width=5, fig.align='center', crop = TRUE----
+## ----makeItemsScale_example_2, fig.height=4, fig.width=5, fig.align='center', crop = TRUE----
 ## apply makeItemsScale() function
 newItems_2 <- makeItemsScale(
   scale = summatedScale,
@@ -394,7 +405,7 @@ alpha(data = newItems_2) |> round(4)
 ### calculate eigenvalues and print scree plot
 eigenvalues(cor(newItems_2), 1) |> round(3)
 
-## ----makeItemsScale_example_3, fig.height=3, fig.width=5, fig.align='center', crop = TRUE----
+## ----makeItemsScale_example_3, fig.height=4, fig.width=5, fig.align='center', crop = TRUE----
 ## apply makeItemsScale() function
 newItems_3 <- makeItemsScale(
   scale = summatedScale,
@@ -468,9 +479,56 @@ pairedMoments
 
 ## ----paired-sample_t-test, echo=TRUE------------------------------------------
 ## run a paired-sample t-test
-paired_t <- t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
+
+paired_t <- t.test(x = pairedDat$X1, y = pairedDat$X2, paired = TRUE)
+
+# paired_t <- t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
+
 
 paired_t
+
+## ----makeRepeated-test, echo=TRUE---------------------------------------------
+out1 <- makeRepeated(
+  n = 128,
+  k = 3,
+  means = c(3.1, 3.5, 3.9),
+  sds = c(1.0, 1.1, 1.0),
+  items = 4,
+  f_stat = 4.87,
+  structure = "cs",
+  diagnostics = FALSE
+)
+
+head(out1$data)
+out1$correlation_matrix
+
+
+out2 <- makeRepeated(
+  n = 32, k = 4,
+  means = c(2.75, 3.5, 4.0, 4.4),
+  sds = c(0.8, 1.0, 1.2, 1.0),
+  f_stat = 16,
+  structure = "ar1",
+  items = 5,
+  lowerbound = 1, upperbound = 7,
+  return_corr_only = FALSE,
+  diagnostics = TRUE
+)
+
+print(out2)
+
+
+out3 <- makeRepeated(
+  n = 32, k = 4,
+  means = c(2.0, 2.5, 3.0, 2.8),
+  sds = c(0.8, 0.9, 1.0, 0.9),
+  items = 4,
+  f_stat = 24,
+  structure = "toeplitz",
+  diagnostics = TRUE
+)
+
+str(out3)
 
 ## ----correlateScales_dataframes, echo = TRUE----------------------------------
 n <- 128
@@ -647,12 +705,12 @@ pairs(my_correlated_scales,
 ## data structure
 str(my_correlated_scales)
 
-## ----fig7, fig.height=3, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE----
+## ----fig7, fig.height=4, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE----
 ## eigenvalues of dataframe correlations
 Cor_Correlated_Scales <- cor(my_correlated_scales)
 eigenvalues(cormatrix = Cor_Correlated_Scales, scree = TRUE) |> round(2)
 
-## ----fig7a, fig.height=3, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE----
+## ----fig7a, fig.height=4, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE----
 #### Eigenvalues of predictor variable items only
 Cor_Attitude_items <- cor(my_correlated_scales[, -16])
 eigenvalues(cormatrix = Cor_Attitude_items, scree = TRUE) |> round(2)
@@ -699,7 +757,7 @@ evals <- eigenvalues(cormatrix = correlationMatrix)
 
 print(evals)
 
-## ----fig8, fig.height=3, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
+## ----fig8, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
 evals <- eigenvalues(correlationMatrix, 1)
 print(evals)
 

@@ -8,26 +8,25 @@
 [![R-CMD-check](https://github.com/WinzarH/LikertMakeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/WinzarH/LikertMakeR/actions/workflows/R-CMD-check.yaml)
 [![Pkgdown](https://github.com/WinzarH/LikertMakeR/actions/workflows/pkgdown.yaml/badge.svg)](https://winzarh.github.io/LikertMakeR/)
   <!-- badges: end -->
+  
 
-# LikertMakeR <img src="man/figures/logo.png" align="center" height="134" alt="LikertMakeR" />
 
-(V 1.1.0  May 2025)
+# LikertMakeR  <img src="man/figures/logo.png" align="center" height="134" alt="LikertMakeR" />
+
+(V 1.2.0  October 2025)
 
 Synthesise and correlate Likert scales, and similar rating-scale data, with 
 predefined first & second moments (mean and standard deviation), 
 _Cronbach's Alpha_, _Factor Loadings_, and other summary statistics. 
  
-**_LikertMakeR_** synthesises rating-scale data. 
-Such scales are constrained by upper and lower bounds and discrete increments. 
- 
 ## Purpose
  
 The package is intended for: 
  
-  1. "reproducing" or "reverse-engineering" rating-scale data for further 
+  1. "Reproducing" or "Reverse-engineering" rating-scale data for further 
   analysis and visualisation when only summary statistics have been reported, 
     
-  2. teaching. Helping researchers and students to better understand the 
+  2. Teaching. Helping researchers and students to better understand the 
   relationships among scale properties, sample size, number of items, 
   _etc._ ...  
  
@@ -57,7 +56,7 @@ Functions in this version of **_LikertMakeR_** are:
   to generate synthetic rating-scale data with predefined first and 
   second moments and a predefined correlation matrix.
   
-  - [**_makeCorrLoadings_**](#makeCorrLoadings)
+  - [**_makeCorrLoadings_**](#makecorrloadings)
   constructs a item correlation matrix based on factor loadings and 
   factor correlations as might be reported in _Exploratory Factor Analysis_
   (**EFA**) or _Structural Equation Modelling_ (**SEM**).
@@ -66,8 +65,12 @@ Functions in this version of **_LikertMakeR_** are:
   Generate a dataframe of rating scale items from a summative scale 
   and desired Cronbach's Alpha.
   
-  - [**_makePaired()_**](#makePaired) 
-  Generate a dataset from paired-sample t-test summary statistics.
+  - [**_makePaired()_**](#makepaired) 
+  Generate a dataset from _paired-sample t-test_ summary statistics.
+  
+  - [**_makeRepeated()_**](#makerepeated) 
+  Generate a dataset from summary statistics for _repeated-measures ANOVA_, 
+  with options for correlation structure and diagnostics.
   
   - [_**correlateScales()**_](#correlatescales) generates a 
   multidimensional dataframe by combining several dataframes of 
@@ -102,8 +105,8 @@ summed range between 8 (all rated ‘1’) and 56 (all rated ‘7’) with
 all integers in between, and the mean range will be ‘1’ to ‘7’ with 
 intervals of 1/8=0.125.
 
-Technically, because Likert scales, and similar rating scales are bounded 
-with discrete intervals, parametric statistics 
+Technically, because Likert scales, and similar rating scales have upper and 
+lower bounds and measured with discrete intervals, parametric statistics 
 _(such as mean, standard deviation, and correlation)_ should not be applied 
 to summated rating scales. 
 In practice, however, such parametric statistics are commonly used in the 
@@ -111,12 +114,16 @@ social sciences because:
 
   1. they are in common usage and easily understood,
   
-  2. results and conclusions drawn from technically-correct non-parametric 
+  2. In practice, all measures are bounded by the constraints of the 
+  measurement device, meaning that they also have upper and lower boundaries 
+  and discrete units of measurement, which means that: 
+  
+  3. results and conclusions drawn from technically-correct non-parametric 
   statistics are _(almost)_ always the same as for parametric statistics for 
   such data. <br /> 
 [D'Alessandro _et al._ (2020)](https://cengage.com.au/sem121/marketing-research-5th-edition-dalessandro-babin-zikmund) 
 argue that a summated scale, made with multiple items, "approaches" an 
-interval scale measure.
+interval scale measure. 
 
 Likert-scale items, such as responses to a single 1-to-5 agree-disagree 
 question, should not be analysed by professional or responsible researchers. 
@@ -129,8 +136,11 @@ consistent, internally reliable, measure of the target construct.
 
 #### Alternative approaches to synthesising scales
 
-Typically, a researcher will synthesise rating-scale data by sampling with a predetermined probability distribution. <br />
-For example, the following code will generate a vector of values for a single Likert-scale item, with approximately the given probabilities. 
+Typically, a researcher will synthesise simple rating-scale data by sampling 
+with a predetermined probability distribution. 
+
+For example, the following code will generate a vector of values for a single 
+Likert-scale item, with approximately the given probabilities. 
 
           n <- 128
           sample(1:5, n, replace = TRUE,
@@ -149,21 +159,23 @@ values so that the vectors are correlated.
 `makeCorrAlpha()` generates a correlation matrix from a predefined 
 _Cronbach's Alpha()_, enabling the user to apply `makeItems()` 
 to generate scale items that produce an exact _Cronbach's Alpha_. 
-`makeCorrLoadings()` generates a correlation matrix from factor loadings data, 
-enabling the user to apply `makeItems()` to generate multidimensional data.
+`makeCorrLoadings()` generates a correlation matrix from factor loadings 
+data, enabling the user to apply `makeItems()` to generate 
+multidimensional data.
 
 `makeItems()` will generate synthetic rating-scale data with predefined 
 first and second moments and a predefined correlation matrix. 
 
 `makeItemsScale()` generate a dataframe of rating scale items from a 
 summative scale and desired _Cronbach's Alpha_. 
-`correlateScales()` generates a multidimensional dataframe by combining several
-dataframes of rating-scale items so that their summated scales are correlated 
-according to a predefined correlation matrix.
+`correlateScales()` generates a multidimensional dataframe by 
+combining several dataframes of rating-scale items so that their summated 
+scales are correlated according to a predefined correlation matrix.
 
 ## Install _LikertMakeR_
 
-To download and install the package, run the following code from your R console.
+To download and install the package, run the following code from 
+your R console.
 
 From __CRAN__:
      
@@ -205,7 +217,8 @@ author's _GitHub_ repository.
   
   -  **_items_**: number of items making the scale. Default = '1' 
   
-  -  **_precision_**: can relax the level of accuracy of moments. Default = '0' 
+  -  **_precision_**: can relax the level of accuracy of moments. 
+     Default = '0' which typically gives accuracy to two decimal places. 
   
   
 
@@ -256,39 +269,46 @@ ____
 
 ### lcor() 
 
-The function, **_lcor()_**, applies a simple _evolutionary algorithm_ to 
-rearrange the values in the columns of a data set so that they are correlated 
-at a specified level. 
-**_lcor()_** does not change the values - it swaps their positions in each 
-column so that univariate statistics do not change, 
+The function, **_lcor()_**, rearranges the values in the columns of a data set 
+so that they are correlated at a specified level. 
+
+##### NOTE
+
+**_lcor()_** does not change the values of a data frame - it swaps their 
+positions in each column so that univariate statistics do not change, 
 but their correlations with other columns do.
 
 #### lcor() usage
 
-      lcor(data, target)
+      lcor(data, target, passes = 10)
 
 ##### lcor() arguments
 
-  -  **_data_**: a starter data set of rating-scales 
+  -  **_data_**: a starter data set of 'k' rating-scales presented 
+  in 'k' columns
   
-  -  **_target_**: the target correlation matrix 
+  -  **_target_**: the target correlation matrix: a 'k'*'k' correlation matrix
+  
+  -  **_passes_**: number of value swap passes to apply when creating 
+  correlated data. Increasing this number _MAY_ improve accuracy if the number 
+  of columns is large. 
+  Decreasing this number will be faster, but _MAY_ be less accurate.
 
 
 ### **_lcor()_**  Example #1
-
 
 ####  generate synthetic data
      
       n <- 64
      x1 <- lfast(n, 3.5, 1.00, 1, 5, 5) 
-     x2 <- lfast(n, 1.5, 0.75, 1, 5, 5) 
+     x2 <- lfast(n, 2.0, 0.85, 1, 5, 5) 
      x3 <- lfast(n, 3.0, 1.70, 1, 5, 5) 
      x4 <- lfast(n, 2.5, 1.50, 1, 5, 5)   
      
      mydat4 <- data.frame(x1, x2, x3, x4) 
      
      head(mydat4)
-     cor(mydat4) |> round(3)
+     cor(mydat4) |> round(3) ## random independent data with low correlations
      
 
 ####  Define a target correlation matrix
@@ -307,7 +327,7 @@ but their correlations with other columns do.
 
      new4 <- lcor(data = mydat4, target = tgt4)
      
-     cor(new4) |> round(3)
+     cor(new4) |> round(3)  ## same data rearranged to be close to target
 
 
 
@@ -375,8 +395,9 @@ ____
 #### NOTE
 
 Random values generated by _makeCorrAlpha()_ are volatile.
- _makeCorrAlpha()_ may not generate a feasible (positive-definite)
- correlation matrix, especially when variance is high relative to
+ In some cases, _makeCorrAlpha()_ may not generate a feasible 
+ (positive-definite) correlation matrix, 
+ especially when variance is high relative to
   
    * desired Alpha, and
    * desired correlation dimensions (number of items)
@@ -466,22 +487,22 @@ ____
   - **_factorCor_**:  'f' x 'f' factor correlation matrix. 
   If not present, then we assume that the factors are uncorrelated 
   (orthogonal), which is rare in practice, and the function applies an 
-  identity matrix for _factor_cor_.
+  identity matrix for _factorCor_.
  
   - **_uniquenesses_**: length 'k' vector of uniquenesses.
      If NULL, the default, compute from the calculated communalities.
  
-  - **_nearPD_**: (logical) If TRUE, then the function calls the _nearPD_ 
-  function from the _**Matrix**_ package to transform the resulting 
+  - **_nearPD_**: (logical) If TRUE, then the function calls the `nearPD()` 
+  function from the **_Matrix_** package to transform the resulting 
   correlation matrix onto the nearest Positive Definite matrix. 
   Obviously, this only applies if the resulting correlation matrix is not 
   positive definite.  (It should never be needed.)
 
-###### Note
+##### Note
 
-"Censored" loadings (for example, where loadings less than some small value 
-(often '0.30'), are removed for ease-of-communication) tend to severely reduce 
-the accuracy of the `makeCorrLoadings()` function. 
+"Censored" loadings, such as when loadings less than some small value 
+(often '_0.30_') are removed for ease-of-communication, tend to severely 
+reduce the accuracy of the `makeCorrLoadings()` function. 
 For a detailed demonstration, see the file, **makeCorrLoadings_Validate.pdf** 
 in the package website on GitHub.
 
@@ -727,7 +748,12 @@ ___
 
 _makePaired()_ generates a dataset from paired-sample t-test summary statistics.
 
-_makePaired()_ generates correlated values so the data replicate rating scales taken, for example, in a before and after experimental design. The function is effectively a wrapper function for _lfast()_ and _lcor()_ with the addition of a t-statistic from which the between-column correlation is inferred.
+_makePaired()_ generates correlated values so the data replicate rating scales 
+taken from a _paired-samples t-test_ - for example, in a before and after 
+experimental design. 
+The function is effectively a wrapper function for _lfast()_ and _lcor()_ with 
+the addition of a t-statistic from which the between-column correlation is 
+inferred.
 
 Paired t-tests apply to observations that are associated with each other. For example: the same people before and after a treatment; the same people rating two different objects; ratings by husband & wife; _etc._
 
@@ -767,6 +793,112 @@ Paired t-tests apply to observations that are associated with each other. For ex
     pairedMoments
     
     t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
+
+
+___
+
+## Create a dataframe for Repeated-Measures ANOVA
+
+### makeRepeated()
+
+**_makeRepeated()_** constructs a synthetic dataset and inter-timepoint 
+correlation matrix from a repeated-measures ANOVA result, based on reported 
+means, standard deviations, and an F-statistic. 
+
+This function estimates the average correlation between repeated measures by 
+matching the reported F-statistic, under one of three assumed correlation 
+structures:
+
+ - `"cs"` (*Compound Symmetry*): Compound Symmetry assumes that all repeated measures are equally correlated with each other. That is, the correlation between time 1 and time 2 is the same as between time 1 and time 3, and so on. This structure is commonly used in repeated-measures ANOVA by default. It's mathematically simple and reflects the idea that all timepoints are equally related. However, it may not be realistic for data where correlations decrease as time intervals increase (e.g., memory decay or learning effects). 
+ 
+ - `"ar1"` (*First-Order Autoregressive*): first-order autoregressive, assumes that measurements closer together in time are more highly correlated than those further apart. For example, the correlation between time 1 and time 2 is stronger than between time 1 and time 3. This pattern is often realistic in longitudinal or time-series studies where change is gradual. The correlation drops off exponentially with each time step. Use this structure if you believe the relationship between repeated measures weakens steadily over time.
+ 
+ - `"toeplitz"` (*Linearly Decreasing*): Toeplitz structure is a more flexible option that allows the correlation between measurements to decrease linearly as the time gap increases. Unlike AR(1), where the decline is exponential, the Toeplitz structure assumes a straight-line drop in correlation. This may be useful in studies where changes across time are gradual or irregular, but not strictly exponential. It’s a good middle ground when neither compound symmetry nor AR(1) seems quite right.
+
+
+#### makeRepeated() usage
+
+    makeRepeated(
+      n, 
+      k, 
+      means, 
+      sds,
+      f_stat,
+      df_between = k - 1,
+      df_within = (n - 1) * (k - 1),
+      structure = c("cs", "ar1", "toeplitz"),
+      names = paste0("time_", 1:k),
+      items = 1,
+      lowerbound = 1, upperbound = 5,
+      return_corr_only = FALSE,
+      diagnostics = FALSE,
+      ...
+    )
+
+#### makeRepeated() arguments
+
+
+  -  _**n**_ Integer. Sample size used in the original study.
+  -  _**k**_ Integer. Number of repeated measures (timepoints).
+  -  _**means**_ Numeric vector of length `k`. Mean values reported for each timepoint.
+  -  _**sds**_ Numeric vector of length `k`. Standard deviations reported for each timepoint.
+  -  _**f_stat**_ Numeric. The reported repeated-measures ANOVA F-statistic for the within-subjects factor.
+  -  _**df_between**_, Degrees of freedom between conditions (default: `k - 1`).
+  -  _**df_within**_, Degrees of freedom within-subjects (default: `(n - 1) * (k - 1)`).
+  -  _**structure**_ Character. Correlation structure to assume: `"cs"`, `"ar1"`, or `"toeplitz"` (default).
+  -  _**names**_ Character vector of length `k`. Variable names for each timepoint (default: `"time_1"` to `"time_k"`).
+  -  _**items**_ Integer. Number of items used to generate each scale score (passed to `lfast()`).
+  -  _**lowerbound**_, Integer. Lower bounds for Likert-type response scales (default: 1).
+  -  _**upperbound**_, Integer. upper bounds for Likert-type response scales (default: 5).
+  -  _**return_corr_only**_ Logical. If `TRUE`, return only the estimated correlation matrix.
+  -  _**diagnostics**_ Logical. If `TRUE`, include diagnostic summaries such as feasible F-statistic range and effect sizes.
+
+
+#### makeRepeated() examples
+
+     out1 <- makeRepeated(
+       n = 128, 
+       k = 3,
+       means = c(3.1, 3.5, 3.9),
+       sds = c(1.0, 1.1, 1.0),
+       items = 4,
+       f_stat = 4.87,
+       structure = "cs",
+       diagnostics = FALSE
+     )
+     
+     head(out1$data)
+     out1$correlation_matrix
+    
+    
+     out2 <- makeRepeated(
+       n = 32, k = 4,
+       means = c(2.75, 3.5, 4.0, 4.4),
+       sds = c(0.8, 1.0, 1.2, 1.0),
+       f_stat = 16,
+       structure = "ar1",
+       items = 5,
+       lowerbound = 1, upperbound = 7,
+       return_corr_only = FALSE,
+       diagnostics = TRUE
+     )
+    
+     print(out2)
+    
+    
+     out3 <- makeRepeated(
+       n = 32, k = 4,
+       means = c(2.0, 2.5, 3.0, 2.8),
+       sds = c(0.8, 0.9, 1.0, 0.9),
+       items = 4,
+       f_stat = 24,
+       structure = "toeplitz",
+       diagnostics = TRUE
+     )
+    
+     str(out3)
+    
+
 
 ___
 
@@ -880,11 +1012,13 @@ k*k positive-semi-definite matrix, where 'k' is the number of dataframes
     eigenvalues(cormatrix = cor(my_correlated_scales), scree = TRUE) |> 
     round(2)
 
+
+
 ___
 
 ## Helper functions
 
-_likertMakeR()_ includes two additional functions that may be of help 
+_likertMakeR_ includes two additional functions that may be of help 
  when examining parameters and output.
 
   - **_alpha()_** calculates _Cronbach's Alpha_ from a given correlation 
@@ -896,7 +1030,7 @@ _likertMakeR()_ includes two additional functions that may be of help
 
 ### alpha()
 
-_alpha()_ accepts, as input, either a correlation matrix or a dataframe. 
+**_alpha()_** accepts, as input, either a correlation matrix or a data frame. 
 If both are submitted, then the correlation matrix is used by default, 
 with a message to that effect.
 
@@ -961,6 +1095,7 @@ _eigenvalues()_ calculates eigenvalues of a correlation
   - **_scree_**: (logical) default = FALSE. If TRUE (or 1), 
   then _eigenvalues()_ produces a scree plot to illustrate the eigenvalues.
 
+
 ### eigenvalues() examples
 
 #### define parameters
@@ -995,7 +1130,7 @@ ____
 
      Winzar, H. (2022). LikertMakeR: Synthesise and correlate Likert-scale 
      and related rating-scale data with predefined first & second moments, 
-     Version 1.0.1 (2025),
+     Version 1.2.0 (2025),
      The Comprehensive R Archive Network (CRAN),
     <https://CRAN.R-project.org/package=LikertMakeR>
         
@@ -1009,6 +1144,6 @@ ____
     journal = {The Comprehensive R Archive Network (CRAN)},
     month = {12},
     year = {2022},
-    version = {1.0.1 (2025)}
+    version = {1.2.0 (2025)}
     url = {https://CRAN.R-project.org/package=LikertMakeR},
     }

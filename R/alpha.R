@@ -1,6 +1,6 @@
 #' Calculate Cronbach's Alpha from a correlation matrix or dataframe
 #' @name alpha
-#' @description \code{alpha()} calculate Cronbach's Alpha from a given
+#' @description `alpha()` calculates Cronbach's Alpha from a given
 #'   correlation matrix or a given dataframe.
 #'
 #' @param cormatrix (real) a square symmetrical matrix with values
@@ -61,7 +61,7 @@ alpha <- function(cormatrix = NULL, data = NULL) {
 
   k <- ncol(cormatrix)
   # calculate alpha
-  cronbachAlpha <- (k * mean_r) / (1 + (k - 1) * mean_r)
+  cronbach_alpha <- (k * mean_r) / (1 + (k - 1) * mean_r)
 
-  return(cronbachAlpha)
+  return(cronbach_alpha)
 }

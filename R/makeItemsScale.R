@@ -2,15 +2,16 @@
 #'
 #' @name makeItemsScale
 #'
-#' @description \code{makeItemsScale()} generates a random dataframe
+#' @description `makeItemsScale()` generates a random dataframe
 #'  of scale items based on a predefined summated scale
-#'  (such as created by the \code{lfast()} function),
+#'  (such as created by the [lfast()] function),
 #'  and a desired _Cronbach's Alpha_.
 #'
 #'  scale, lowerbound, upperbound, items, alpha, variance
 #'
 #' @param scale (int) a vector or dataframe of the summated rating scale.
-#' Should range from ('lowerbound' * 'items') to ('upperbound' * 'items')
+#' Should range from \eqn{lowerbound \times items} to
+#'  \eqn{upperbound \times items}
 #' @param lowerbound (int) lower bound of the scale item
 #' (example: '1' in a '1' to '5' rating)
 #' @param upperbound (int) upper bound of the scale item
@@ -34,7 +35,7 @@
 #'
 #' ## alpha
 #'
-#' \code{makeItemsScale()} rearranges the item values within each row,
+#' `makeItemsScale()` rearranges the item values within each row,
 #' attempting to give a dataframe of Likert-scale items that produce a
 #' predefined _Cronbach's Alpha_.
 #'
@@ -55,7 +56,7 @@
 #' among item values that your new dataframe should have.
 #'
 #' For example, consider a summated value of '9' on which we apply
-#' the \code{makeItemsScale()} function to generate three items.
+#' the `makeItemsScale()` function to generate three items.
 #' With zero variance (variance parameter = '0'), then we see all items with
 #' the same value, the mean of '3'.
 #' With variance = '1', then we see all items with values
@@ -72,7 +73,7 @@
 #'
 #'
 #' Similarly, the same mean value applied to six items with
-#'  \code{makeItemsScale()} gives the following combinations at
+#'  `makeItemsScale()` gives the following combinations at
 #'  different values of the 'variance' parameter.
 #'
 #'   | variance | v1 | v2 | v3 | v4 | v5 | v6 | sum |
@@ -183,7 +184,13 @@
 #' # cor(mydat_80) |> round(2)
 #' # alpha(data = mydat_80) |> round(2)
 #'
-makeItemsScale <- function(scale, lowerbound, upperbound, items, alpha = 0.80, variance = 0.5) {
+makeItemsScale <- function(
+    scale,
+    lowerbound,
+    upperbound,
+    items,
+    alpha = 0.80,
+    variance = 0.5) {
   ###
   ##  makeCombinations produces a dataframe of all combinations of item values
   ###
@@ -204,8 +211,6 @@ makeItemsScale <- function(scale, lowerbound, upperbound, items, alpha = 0.80, v
       n = length(c(lowerbound:upperbound)),
       repeats.allowed = TRUE
     )
-    # sums <- apply(mycombinations, MARGIN = 1, FUN = sum)
-    # mycombinations <- cbind(mycombinations, sums) |> data.frame()
 
     return(mycombinations)
   }
@@ -250,8 +255,6 @@ makeItemsScale <- function(scale, lowerbound, upperbound, items, alpha = 0.80, v
       filter(sds == target_sd) |>
       slice_sample(n = 1) |>
       subset(select = -c(sums, sds))
-
-    # return(vec)
   }
 
   ###

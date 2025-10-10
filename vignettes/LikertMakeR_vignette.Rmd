@@ -2,7 +2,7 @@
 title: "LikertMakeR vignette"
 author: "Hume Winzar"
 date: "April 2025"
-output: rmarkdown::html_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{LikertMakeR vignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -23,7 +23,7 @@ library(LikertMakeR)
 
 
 ```{r logo, fig.align='center', echo=FALSE, out.width = '25%'}
-knitr::include_graphics("LikertMakeR_3.png")
+knitr::include_graphics("img/LikertMakeR_3.png")
 ```
 
 
@@ -57,18 +57,17 @@ Hopefully, this tool will help researchers, teachers & students,
 and other reviewers, to better think about rating-scale distributions, 
 and the effects of variance, scale boundaries, 
 and number of items in a scale. 
-Researchers can also use _LikertMakeR_ to prepare analyses ahead of a 
-formal survey.
-
+Researchers can also use _LikertMakeR_ to create dummy data to prepare 
+analyses ahead of a formal survey.
 
 ## Rating scale properties
 
-A Likert scale is the mean, or sum, of several ordinal rating scales. 
+A _Likert_ scale is the mean, or sum, of several ordinal rating scales. 
 Typically, they are bipolar (usually "agree-disagree") responses to 
 propositions that are determined to be moderately-to-highly correlated 
 and that capture some facet of a theoretical construct.
 
-Rating scales, such as Likert scales, are not continuous or unbounded.
+Rating scales, such as _Likert_ scales, are not continuous or unbounded.
 
 For example, a 5-point Likert scale that is constructed with, 
 say, five items (questions) will have a summed range of between 5 
@@ -79,15 +78,19 @@ range between 8 (all rated '1') and 56 (all rated '7') with all integers
 in between, 
 and the mean range will be '1' to '7' with intervals of 1/8=0.125.
 
-Technically, because they are bounded and not continuous, parametric statistics, such as mean, standard deviation, and correlation, should not be applied to summated rating scales. In practice, however, parametric statistics are commonly used in the social sciences because:
+Technically, because they are bounded and not continuous, parametric 
+statistics, such as mean, standard deviation, and correlation, should not be 
+applied to summated rating scales. 
+In practice, however, parametric statistics are commonly used in the social 
+sciences because:
 
   1. they are in common usage and easily understood,
   
   2. results and conclusions drawn from technically-correct non-parametric statistics are _(almost)_ always the same as for parametric statistics for such data. <br /> 
 For example, [D'Alessandro _et al._ (2020)](https://cengage.com.au/sem121/marketing-research-5th-edition-dalessandro-babin-zikmund) 
 argue that a summated scale, made with multiple items, 
-"approaches" an interval scale measure. 
-This implies that parametric statistics are acceptable. 
+"approaches" an interval scale measure, implying that parametric statistics 
+are quite acceptable. 
 
 Rating-scale boundaries define minima and maxima for any scale values. 
 If the mean is close to one boundary then data points will gather more 
@@ -97,7 +100,7 @@ then the data will be always skewed, as shown in the following plots.
 
 
 ```{r skew, fig.align='center', echo=FALSE, out.width = '85%', fig.cap="Off-centre means always give skewed distribution in bounded rating scales"}
-knitr::include_graphics("skew_chart.png")
+knitr::include_graphics("img/skew_chart.png")
 ```
 
 _____
@@ -126,6 +129,9 @@ _____
  
  * *makePaired()* generates a dataframe of two correlated columns based 
  on summary data from a paired-sample t-test.
+ 
+ * *makeRepeated()* generates a dataframe of 'k' correlated columns based 
+ on summary data from a repeated-samples ANOVA.
  
  * *correlateScales()* creates a dataframe of correlated summated scales 
  as one might find in completed survey questionnaire and possibly used 
@@ -219,8 +225,9 @@ x1 <- lfast(
 
 
 
-```{r fig1, fig.height=3, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: 4-item, 1-5 Likert scale"}
+```{r fig1, fig.height=4, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: 4-item, 1-5 Likert scale"}
 ## distribution of x
+
 hist(x1,
   cex.axis = 0.5, cex.main = 0.75,
   breaks = seq(from = (1 - (1 / 8)), to = (5 + (1 / 8)), by = (1 / 4)),
@@ -239,8 +246,9 @@ x2 <- lfast(256, 3, 2.5, 0, 10)
 ```
 
 
-```{r fig2, fig.height=3, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: likelihood-of-purchase scale"}
+```{r fig2, fig.height=4, fig.width=5, fig.align='center', echo = FALSE, crop = TRUE, fig.cap="Example: likelihood-of-purchase scale"}
 ## generate histogram
+
 hist(x2,
   cex.axis = 0.5, cex.main = 0.75,
   breaks = seq(from = -0.5, to = 10.5, by = 1),
@@ -354,7 +362,8 @@ The first ten observations from this dataframe are:
 head(new3, 10)
 ```
 
-And the new data frame is correlated close to our desired correlation matrix; here presented to 3 decimal places:
+And the new dataframe is correlated close to our desired correlation matrix; 
+here presented to 3 decimal places:
 
 ```{r new3Cor, echo = FALSE}
 cor(new3) |> round(3)
@@ -440,7 +449,7 @@ alpha(cor_matrix_4)
 
 
 
-```{r fig3, fig.height=3, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE}
+```{r fig3, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE}
 ## using helper function eigenvalues()
 
 eigenvalues(cor_matrix_4, 1)
@@ -473,7 +482,7 @@ cor_matrix_12 |> round(2)
 
 ##### test output
 
-```{r fig4, fig.height=3, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE}
+```{r fig4, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE}
 ## calculate Cronbach's Alpha
 alpha(cor_matrix_12)
 
@@ -757,7 +766,7 @@ myItems <- makeItems(
   cormatrix = myCorr
 )
 
-## resulting data frame
+## resulting dataframe
 head(myItems)
 tail(myItems)
 
@@ -768,14 +777,15 @@ myMoments <- data.frame(
 ) |> t()
 myMoments
 
-## Cronbach's Alpha of data frame
+## Cronbach's Alpha of dataframe
 alpha(NULL, myItems)
 ```
 
-#### Summary plots of new data frame
+#### Summary plots of new dataframe
 
 ```{r fig5, fig.height=5, fig.width=5, fig.align='center', echo=FALSE, warning=FALSE, crop = TRUE, fig.cap="Summary of dataframe from makeItems() function"}
 # Correlation panel
+
 panel.cor <- function(x, y) {
   usr <- par("usr")
   on.exit(par(usr))
@@ -785,11 +795,15 @@ panel.cor <- function(x, y) {
   cex.cor <- 0.8 / strwidth(txt)
   text(0.5, 0.5, txt, cex = 1.25)
 }
+
 # Customize upper panel
+
 upper.panel <- function(x, y) {
   points(x, y, pch = 19, col = "#0000ff11")
 }
+
 # diagonals
+
 panel.hist <- function(x, ...) {
   usr <- par("usr")
   on.exit(par(usr))
@@ -801,7 +815,9 @@ panel.hist <- function(x, ...) {
   y <- y / max(y)
   rect(breaks[-nB], 0, breaks[-1], y, col = "#87ceeb66")
 }
+
 # Create the plots
+
 pairs(myItems,
   lower.panel = panel.cor,
   upper.panel = upper.panel,
@@ -865,8 +881,9 @@ meanScale <- lfast(
 summatedScale <- meanScale * items
 ```
 
-```{r summatedScale_histogram, echo=FALSE, fig.height=3, fig.width=5, fig.align='center', crop = TRUE, fig.cap="Summated scale distribution"}
+```{r summatedScale_histogram, echo=FALSE, fig.height=4, fig.width=5, fig.align='center', crop = TRUE, fig.cap="Summated scale distribution"}
 ## Histogram of summated scale
+
 hist(summatedScale,
   cex.axis = 0.5, cex.main = 0.75,
   breaks = seq(
@@ -884,8 +901,9 @@ hist(summatedScale,
 
 #### create items with _makeItemsScale()_
 
-```{r makeItemsScale_example_1, fig.height=3, fig.width=5, fig.align='center', crop = TRUE}
+```{r makeItemsScale_example_1, fig.height=4, fig.width=5, fig.align='center', crop = TRUE}
 ## apply makeItemsScale() function
+
 newItems_1 <- makeItemsScale(
   scale = summatedScale,
   lowerbound = lowerbound,
@@ -908,7 +926,8 @@ eigenvalues(cor(newItems_1), 1) |> round(3)
 
 
 ####  _makeItemsScale()_ with same summated values and higher _alpha_
-```{r makeItemsScale_example_2, fig.height=3, fig.width=5, fig.align='center', crop = TRUE}
+
+```{r makeItemsScale_example_2, fig.height=4, fig.width=5, fig.align='center', crop = TRUE}
 ## apply makeItemsScale() function
 newItems_2 <- makeItemsScale(
   scale = summatedScale,
@@ -931,9 +950,9 @@ alpha(data = newItems_2) |> round(4)
 eigenvalues(cor(newItems_2), 1) |> round(3)
 ```
 
-####  same summated values with lower _alpha_ that may require higher _variance_
+####  same summated values with lower _alpha_ may require higher _variance_
 
-```{r makeItemsScale_example_3, fig.height=3, fig.width=5, fig.align='center', crop = TRUE}
+```{r makeItemsScale_example_3, fig.height=4, fig.width=5, fig.align='center', crop = TRUE}
 ## apply makeItemsScale() function
 newItems_3 <- makeItemsScale(
   scale = summatedScale,
@@ -989,9 +1008,11 @@ t.test(x1, x2)
 
 ### makePaired() paired-sample t-test
 
-_**makePaired()**_ generates correlated values so the data replicate rating scales taken, for example, in a before and after experimental design. The function is effectively a wrapper function for _lfast()_ and _lcor()_ with the addition of a _t-statistic_ from which the between-column correlation is inferred.
+_**makePaired()**_ generates correlated values so the data replicate rating scales taken, for example, in a before and after experimental design. 
+The function is effectively a wrapper function for _lfast()_ and _lcor()_ with the addition of a _t-statistic_ from which the between-column correlation is inferred.
 
-Paired t-tests apply to observations that are associated with each other. For example: the same people rating the same object before and after a treatment, the same people rating two different objects, ratings by husband & wife, _etc._
+Paired t-tests apply to observations that are associated with each other. 
+For example: the same people rating the same object before and after a treatment, the same people rating two different objects, ratings by husband & wife, _etc._
 
 _**makePaired()**_ has similar parameters as for the _lfast()_ function with the addition of a value for the desired t-statistic.
 
@@ -1052,10 +1073,123 @@ pairedMoments
 
 ```{r paired-sample_t-test, echo=TRUE}
 ## run a paired-sample t-test
-paired_t <- t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
+
+paired_t <- t.test(x = pairedDat$X1, y = pairedDat$X2, paired = TRUE)
+
+# paired_t <- t.test(pairedDat$X1, pairedDat$X2, paired = TRUE)
+
 
 paired_t
 ```
+
+
+----
+
+## Create a dataframe for Repeated-Measures ANOVA  
+
+### makeRepeated()
+
+_makeRepeated()_ Reconstructs a synthetic dataset and inter-timepoint correlation matrix from a repeated-measures ANOVA result, based on reported means, standard deviations, and an F-statistic. 
+
+This function estimates the average correlation between repeated measures by matching the reported F-statistic, under one of three assumed correlation structures:
+
+ - `"cs"` (*Compound Symmetry*): Compound Symmetry assumes that all repeated measures are equally correlated with each other. That is, the correlation between time 1 and time 2 is the same as between time 1 and time 3, and so on. This structure is commonly used in repeated-measures ANOVA by default. It's mathematically simple and reflects the idea that all timepoints are equally related. However, it may not be realistic for data where correlations decrease as time intervals increase (e.g., memory decay or learning effects).
+ 
+ - `"ar1"` (*First-Order Autoregressive*): first-order autoregressive, assumes that measurements closer together in time are more highly correlated than those further apart. For example, the correlation between time 1 and time 2 is stronger than between time 1 and time 3. This pattern is often realistic in longitudinal or time-series studies where change is gradual. The correlation drops off exponentially with each time step. 
+ 
+ - `"toeplitz"` (*Linearly Decreasing*): Toeplitz structure is a more flexible option that allows the correlation between measurements to decrease linearly as the time gap increases. Unlike AR(1), where the decline is exponential, the Toeplitz structure assumes a straight-line drop in correlation.
+
+
+
+#### makeRepeated() usage
+
+    makeRepeated(
+      n, 
+      k, 
+      means, 
+      sds,
+      f_stat,
+      df_between = k - 1,
+      df_within = (n - 1) * (k - 1),
+      structure = c("cs", "ar1", "toeplitz"),
+      names = paste0("time_", 1:k),
+      items = 1,
+      lowerbound = 1, upperbound = 5,
+      return_corr_only = FALSE,
+      diagnostics = FALSE,
+      ...
+    )
+
+
+#### makeRepeated() arguments
+
+  -  _**n**_ Integer. Sample size used in the original study.
+  -  _**k**_ Integer. Number of repeated measures (timepoints).
+  -  _**means**_ Numeric vector of length `k`. Mean values reported for each timepoint.
+  -  _**sds**_ Numeric vector of length `k`. Standard deviations reported for each timepoint.
+  -  _**f_stat**_ Numeric. The reported repeated-measures ANOVA F-statistic for the within-subjects factor.
+  -  _**df_between**_, Degrees of freedom between conditions (default: `k - 1`).
+  -  _**df_within**_, Degrees of freedom within-subjects (default: `(n - 1) * (k - 1)`).
+  -  _**structure**_ Character. Correlation structure to assume: `"cs"`, `"ar1"`, or `"toeplitz"` (default).
+  -  _**names**_ Character vector of length `k`. Variable names for each timepoint (default: `"time_1"` to `"time_k"`).
+  -  _**items**_ Integer. Number of items used to generate each scale score (passed to `link{lfast}`).
+  -  _**lowerbound**_, Integer. Lower bounds for Likert-type response scales (default: `1`).
+  -  _**upperbound**_, Integer. upper bounds for Likert-type response scales (default: `5`).
+  -  _**return_corr_only**_ Logical. If `TRUE`, return only the estimated correlation matrix.
+  -  _**diagnostics**_ Logical. If `TRUE`, include diagnostic summaries such as feasible F-statistic range and effect sizes.
+
+
+#### makeRepeated() examples
+
+```{r  makeRepeated-test, echo=TRUE}
+out1 <- makeRepeated(
+  n = 128,
+  k = 3,
+  means = c(3.1, 3.5, 3.9),
+  sds = c(1.0, 1.1, 1.0),
+  items = 4,
+  f_stat = 4.87,
+  structure = "cs",
+  diagnostics = FALSE
+)
+
+head(out1$data)
+out1$correlation_matrix
+
+
+out2 <- makeRepeated(
+  n = 32, k = 4,
+  means = c(2.75, 3.5, 4.0, 4.4),
+  sds = c(0.8, 1.0, 1.2, 1.0),
+  f_stat = 16,
+  structure = "ar1",
+  items = 5,
+  lowerbound = 1, upperbound = 7,
+  return_corr_only = FALSE,
+  diagnostics = TRUE
+)
+
+print(out2)
+
+
+out3 <- makeRepeated(
+  n = 32, k = 4,
+  means = c(2.0, 2.5, 3.0, 2.8),
+  sds = c(0.8, 0.9, 1.0, 0.9),
+  items = 4,
+  f_stat = 24,
+  structure = "toeplitz",
+  diagnostics = TRUE
+)
+
+str(out3)
+```
+
+
+
+
+
+
 
 
 ----
@@ -1284,13 +1418,13 @@ str(my_correlated_scales)
 ```
 
 
-```{r fig7, fig.height=3, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE}
+```{r fig7, fig.height=4, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE}
 ## eigenvalues of dataframe correlations
 Cor_Correlated_Scales <- cor(my_correlated_scales)
 eigenvalues(cormatrix = Cor_Correlated_Scales, scree = TRUE) |> round(2)
 ```
 
-```{r fig7a, fig.height=3, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE}
+```{r fig7a, fig.height=4, fig.width=5, fig.align='center', echo = TRUE,  crop = TRUE}
 #### Eigenvalues of predictor variable items only
 Cor_Attitude_items <- cor(my_correlated_scales[, -16])
 eigenvalues(cormatrix = Cor_Attitude_items, scree = TRUE) |> round(2)
@@ -1377,7 +1511,7 @@ print(evals)
 
 ##### eigenvalues() function with optional scree plot
 
-```{r fig8, fig.height=3, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE}
+```{r fig8, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE}
 evals <- eigenvalues(correlationMatrix, 1)
 print(evals)
 ```
@@ -1489,7 +1623,7 @@ ____
 
 # References
 
-D'Alessandro, S., H. Winzar, B. Lowe, Ba.J. Babin, W. Zikmund (2020). 
+D'Alessandro, S., H. Winzar, B. Lowe, B.J. Babin, W. Zikmund (2020). 
 _Marketing Research_ 5<sup>ed</sup>, Cengage Australia.  <https://cengage.com.au/sem121/marketing-research-5th-edition-dalessandro-babin-zikmund> 
 
 Grønneberg, S., Foldnes, N., & Marcoulides, K. M. (2022).
@@ -1517,7 +1651,7 @@ under Marginal Model Specification: The SimCorMultRes Package,
 _The R Journal_ 8:2, 79-91. 
 <doi:10.32614/RJ-2016-034>
 
-Winzar, H. (2020). LikertMakeR: Synthesise and correlate Likert scale and 
+Winzar, H. (2022). LikertMakeR: Synthesise and correlate Likert scale and 
 related rating-scale data with predefined first and second moments. CRAN: 
-<doi: 10.32614/CRAN.package.LikertMakeR>
+<doi:10.32614/CRAN.package.LikertMakeR>
 

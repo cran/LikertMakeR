@@ -7,21 +7,22 @@
 #'
 #' @importFrom Rcpp sourceCpp
 #'
-#' @description \code{lcor()} rearranges values in each column of a
+#' @description `lcor()` rearranges values in each column of a
 #' data-frame so that columns are correlated to match a predefined
 #' correlation matrix.
 #'
 #' @details Values in a column do not change, so univariate
 #' statistics remain the same.
 #'
-#' @param data data-frame that is to be rearranged
+#' @param data dataframe that is to be rearranged
 #'
-#' @param target target correlation matrix - should be a symmetric
-#' k*k positive-semi-definite matrix
+#' @param target target correlation matrix.
+#' Must have same dimensions as number of columns in data-frame.
 #'
-#' @param passes Number of optimization passes (default = 10)
+#' @param passes Number of optimization passes (default = 10).
 #' Increasing this value *MAY* improve results if n-columns
 #' (target correlation matrix dimensions) are many.
+#' Decreasing the value for 'passes' is faster but may decrease accuracy.
 #'
 #' @return Returns a dataframe whose column-wise correlations
 #' approximate a user-specified correlation matrix
@@ -57,11 +58,13 @@
 #' ## test output
 #' cor(new3) |> round(3)
 #'
-#' @importFrom stats cor
-#' @importFrom stats rbeta
+#' @importFrom stats cor rbeta
 #'
 #' @export
+#'
 lcor <- function(data, target, passes = 10) {
-  .Call("_LikertMakeR_lcor_C_randomised", data, target, passes, PACKAGE = "LikertMakeR") |>
+  .Call("_LikertMakeR_lcor_C_randomised", data, target, passes,
+    PACKAGE = "LikertMakeR"
+  ) |>
     data.frame()
 }

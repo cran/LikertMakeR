@@ -1,8 +1,38 @@
 # LikertMakeR (development version)
 
+# LikertMakeR 1.2.0 (2025-10-10)
+
+## Improvements
+
+- New `makeRepeated()` function : 
+   takes summary statistics that are reported in a typical repeated-measures 
+   ANOVA study, and then returns 
+   
+   1. a correlation matrix of the vectors of repeated measures and
+   
+   2. a data frame based on the correlation matrix and summary moments, plus
+   
+   3. diagnostic statistics, including possible F-statistics based on information provided. 
+   
+- #lfast_validation# vignette shows that #LikertMaker# does a remarkably good 
+   job of replicating real rating-scale data.
+
+
+## Maintenance
+
+- Vignettes are too large with so many images, so CRAN files include only 
+the #LikertMakeR_vignette# file. Two vignettes that validate `lfast()` 
+and `makeCorrLoadings()` appear only in the package website.
+
+
+
+
 # LikertMakeR 1.1.0 (2025-05-26)
 
 ## Improvements
+
+- new `makePaired()` function:
+  takes summary statistics from a paired-sample t-test and produces a data frame of rating-scale data that would deliver such summary statistics
 
 - `lcor()` function rewrite: 
     previous version used a very systematic swapping of values in each column to minimise the difference between data correlation and a target correlation matrix. This algorithm had the effect of causing extreme values in each column to be highly-correlated (or lowly correlated as applicable), and leaving middle-values relatively uncorrelated. This property was probably not noticeable in most cases but was apparent when the range of scale values was great.

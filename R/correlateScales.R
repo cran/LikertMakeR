@@ -1,14 +1,14 @@
-#' Create a dataframe of correlated scales from different dataframes of scale items
+#' Dataframe of correlated scales from different dataframes of scale items
 #'
 #' @name correlateScales
 #'
-#' @description \code{correlateScales()} creates a dataframe of
+#' @description `correlateScales()` creates a dataframe of
 #' scale items representing correlated constructs,
 #' as one might find in a completed questionnaire.
 #'
 #' @details Correlated rating-scale items generally are summed or
 #' averaged to create a measure of an "unobservable", or "latent", construct.
-#' \code{correlateScales()} takes several such dataframes of rating-scale
+#' `correlateScales()` takes several such dataframes of rating-scale
 #' items and rearranges their rows so that the scales are correlated according
 #' to a predefined correlation matrix. Univariate statistics for each dataframe
 #' of rating-scale items do not change,
@@ -16,7 +16,8 @@
 #'
 #' @param dataframes  a list of 'k' dataframes to be rearranged and combined
 #' @param scalecors target correlation matrix - should be a symmetric
-#' k*k positive-semi-definite matrix, where 'k' is the number of dataframes
+#' \eqn{k \times k} positive-semi-definite matrix,
+#' where 'k' is the number of dataframes
 #'
 #' @importFrom dplyr bind_cols
 #'
@@ -236,7 +237,6 @@ correlateScales <- function(dataframes, scalecors) {
   if (!is.null(new_df) && nrow(new_df) > 0) {
     message("New dataframe successfully created")
   }
-
 
   return(new_df)
 }

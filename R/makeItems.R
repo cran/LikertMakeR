@@ -3,15 +3,15 @@
 #'
 #' @name makeItems
 #'
-#' @description \code{makeItems()} generates a dataframe of random discrete
+#' @description `makeItems()` generates a dataframe of random discrete
 #'  values so the data replicate a rating scale,
 #'  and are correlated close to a predefined correlation matrix.
 #'
-#'  \code{makeItems()} is wrapper function for:
+#'  `makeItems()` is wrapper function for:
 #'
-#'   * \code{lfast()}, generates a dataframe that best fits the desired
+#'   * [lfast()], generates a dataframe that best fits the desired
 #'    moments, and
-#'   * \code{lcor()}, which rearranges values in each column of the dataframe
+#'   * [lcor()], which rearranges values in each column of the dataframe
 #'    so they closely match the desired correlation matrix.
 #'
 #' @param n (positive, int) sample-size - number of observations
@@ -94,7 +94,8 @@ makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
       length(sds) != nrow(cormatrix)
     ) {
       message("ERROR:\nParameters have unequal length & dimensions
-              \nlowerbound, upperbound, means, sds must all be vectors of equal length (k) \nand cormatrix must be of k dimensions")
+              \nlowerbound, upperbound, means, sds must be equal length (k)
+              \nand cormatrix must be of k dimensions")
       return(NULL)
     }
   } ## END input parameters integrity
@@ -124,7 +125,6 @@ makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
   df <- as.data.frame(matrix(nrow = n, ncol = k))
 
   for (i in 1:k) {
-    # cat(paste0("Variable ", i))
     cat("Variable ", i)
     df[, i] <- lfast(n, means[i], sds[i], lowerbound[i], upperbound[i])
   }
