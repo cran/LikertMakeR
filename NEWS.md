@@ -1,5 +1,58 @@
 # LikertMakeR (development version)
 
+# LikertMakeR 1.3.0 (2025-11-24)
+
+## Improvements
+
+- New `makeScalesRegression()` function : 
+   Generates synthetic rating-scale data that replicates reported regression
+   results, and then returns 
+   
+   1. a data frame that provides the requested statistical properties and
+   
+   2. a correlation matrix and summary moments of the data frame, plus
+   
+   3. diagnostic statistics, including comparison of target values against 
+      achieved values. 
+      
+- `makeScales()` function replaces `makeItems()` function:
+    
+   - I finally worked out how to turn a single value into a vector of 
+    length `k`. 
+   - Embarrassingly straightforward.
+    
+- Updated version of `makeCorrAlpha()` function produces a more 
+  "natural-looking" correlation matrix, plus diagnostics:
+
+   - previous version sorted correlations in the correlation matrix to improve 
+     likelihood of extracting a positive-definite matrix. 
+     Fast, but unnatural results.
+   - I have applied a slightly faster algorithm for rearranging the correlations 
+     in a draft matrix to produce one that is positive-definite.   
+   - Additional parameter `sort_cors = FALSE`. 
+     If `TRUE`, results are similar to the earlier version of `makeCorrAlpha()`.
+   - Additional parameter `diagnostics = FALSE`.
+     If `TRUE`, returns a list containing the correlation matrix and a 
+     diagnostics list (target/achieved alpha, average inter-item correlation, 
+     eigenvalues, PD flag, and key arguments).
+     If `FALSE` (default), returns the correlation matrix only. 
+     
+- Updated version of `lfast()` function
+
+   - runs slightly faster
+   
+   
+
+## Maintenance
+
+- new vignette for the new function `makeScalesRegression()`.
+
+- updated examples for `makeScales()` function.
+
+- updated badges in readme file.
+
+
+
 # LikertMakeR 1.2.0 (2025-10-10)
 
 ## Improvements

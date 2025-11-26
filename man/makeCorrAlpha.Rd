@@ -4,7 +4,14 @@
 \alias{makeCorrAlpha}
 \title{Correlation matrix from Cronbach's Alpha}
 \usage{
-makeCorrAlpha(items, alpha, variance = 0.5, precision = 0)
+makeCorrAlpha(
+  items,
+  alpha,
+  variance = 0.5,
+  precision = 0,
+  sort_cors = FALSE,
+  diagnostics = FALSE
+)
 }
 \arguments{
 \item{items}{(positive, int) matrix dimensions:
@@ -15,15 +22,31 @@ number of rows & columns to generate}
 
 \item{variance}{(positive, real) Default = 0.5.
 User-provided standard deviation of values sampled from a
-normally-distributed log transformation.}
+normally-distributed log transformation.
+Caution: Larger values increase chance of a non-positive-definite matrix.
+'TRUE' is faster, but produces less natural output. Default = FALSE}
 
 \item{precision}{(positive, real) Default = 0.
 User-defined value ranging from '0' to '3' to add some random variation
 around the target \emph{Cronbach's Alpha}.
 '0' gives an exact alpha (to two decimal places)}
+
+\item{sort_cors}{(logical) If 'TRUE', sorts the correlation coefficients in
+the final correlation matrix.
+Similar to an earlier version of this function.}
+
+\item{diagnostics}{(logical) If 'TRUE', returns a list containing the
+correlation matrix and a diagnostics list (target/achieved alpha,
+average inter-item correlation, eigenvalues, PD flag, and key arguments).
+If 'FALSE' (default), returns the correlation matrix only.}
 }
 \value{
-a correlation matrix
+If 'diagnostics = FALSE', a k x k correlation matrix.
+If 'diagnostics = TRUE', a list with components:
+\describe{
+\item{R}{k x k correlation matrix}
+\item{diagnostics}{list of summary statistics}
+}
 }
 \description{
 \code{makeCorrAlpha()} generates a random correlation
@@ -72,7 +95,10 @@ alpha(cor_matrix)
 eigenvalues(cor_matrix, 1)
 
 # higher alpha, more items
-cor_matrix2 <- makeCorrAlpha(items = 8, alpha = 0.95)
+cor_matrix2 <- makeCorrAlpha(
+  items = 8,
+  alpha = 0.95
+)
 
 # test output
 cor_matrix2 |> round(2)
@@ -82,11 +108,26 @@ eigenvalues(cor_matrix2, 1) |> round(3)
 
 # large random variation around alpha
 set.seed(42)
-cor_matrix3 <- makeCorrAlpha(items = 6, alpha = 0.85, precision = 2)
+cor_matrix3 <- makeCorrAlpha(
+  items = 6,
+  alpha = 0.85,
+  precision = 2
+)
 
 # test output
 cor_matrix3 |> round(2)
 alpha(cor_matrix3) |> round(3)
 eigenvalues(cor_matrix3, 1) |> round(3)
+
+
+# with diagnostics
+cor_matrix4 <- makeCorrAlpha(
+  items = 4,
+  alpha = 0.80,
+  diagnostics = TRUE
+)
+
+# test output
+cor_matrix4
 
 }

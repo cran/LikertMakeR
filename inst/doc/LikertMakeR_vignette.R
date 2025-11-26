@@ -4,7 +4,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ----setup--------------------------------------------------------------------
+## ----setup, echo=FALSE--------------------------------------------------------
 library(LikertMakeR)
 
 ## ----logo, fig.align='center', echo=FALSE, out.width = '25%'------------------
@@ -143,6 +143,22 @@ alpha(cor_matrix_12)
 ## calculate eigenvalues of the correlation matrix
 eigenvalues(cor_matrix_12, 1) |> round(3)
 
+## ----cor_matrix_d-------------------------------------------------------------
+## apply makeCorrAlpha() with diagnostics
+set.seed(42)
+
+cor_matrix_5 <- makeCorrAlpha(
+  items = 6,
+  alpha = 0.90,
+  diagnostics = TRUE
+)
+
+## ----cor_matrix_5_mat---------------------------------------------------------
+## output
+cor_matrix_5$R |> round(2)
+
+cor_matrix_5$diagnostics
+
 ## ----parameters_makeCorrLoadings, echo=TRUE-----------------------------------
 ## Example loadings
 
@@ -198,7 +214,7 @@ round(orthogonalItemCors, 2)
 ## eigenvalues should suggest exactly  three factors
 eigenvalues(cormatrix = orthogonalItemCors, scree = TRUE)
 
-## ----makeItemsExample---------------------------------------------------------
+## ----makeScalesExample1-------------------------------------------------------
 ## define parameters
 n <- 128
 dfMeans <- c(2.5, 3.0, 3.0, 3.5)
@@ -216,13 +232,65 @@ corMat <- matrix(
   nrow = 4, ncol = 4
 )
 
-## apply makeItems() function
-df <- makeItems(
+var_names <- c("var1", "var2", "var3", "var4")
+colnames(corMat) <- var_names
+rownames(corMat) <- var_names
+
+## apply makeScales() function
+df <- makeScales(
   n = n,
   means = dfMeans,
   sds = dfSds,
   lowerbound = lowerbound,
   upperbound = upperbound,
+  cormatrix = corMat
+)
+
+## test the function
+str(df)
+
+### means should be correct to two decimal places
+dfmoments <- data.frame(
+  mean = apply(df, 2, mean) |> round(3),
+  sd = apply(df, 2, sd) |> round(3)
+) |> t()
+
+dfmoments
+
+### correlations should be correct to two decimal places
+cor(df) |> round(3)
+
+## ----makeScalesExample2-------------------------------------------------------
+## define parameters
+n <- 256
+dfMeans <- c(3.9, 4.1, 3.6, 4.0)
+dfSds <- c(0.6, 0.5, 0.8, 0.7)
+lowerbound <- rep(1, 4)
+upperbound <- rep(5, 4)
+items <- c(4, 3, 4, 3)
+
+corMat <- matrix(
+  c(
+    1.00, 0.75, 0.60, 0.70,
+    0.75, 1.00, 0.65, 0.72,
+    0.60, 0.65, 1.00, 0.68,
+    0.70, 0.72, 0.68, 1.00
+  ),
+  nrow = 4, ncol = 4
+)
+
+scale_names <- c("BT", "BS", "BL", "BLY")
+rownames(corMat) <- scale_names
+colnames(corMat) <- scale_names
+
+## apply makeScales() function
+df <- makeScales(
+  n = n,
+  means = dfMeans,
+  sds = dfSds,
+  lowerbound = lowerbound,
+  upperbound = upperbound,
+  items = items,
   cormatrix = corMat
 )
 

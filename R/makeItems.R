@@ -1,4 +1,4 @@
-#' Synthesise rating-scale data with given first and second moments and a
+#' Synthesise rating-scale item data with given first and second moments and a
 #' predefined correlation matrix
 #'
 #' @name makeItems
@@ -6,6 +6,9 @@
 #' @description `makeItems()` generates a dataframe of random discrete
 #'  values so the data replicate a rating scale,
 #'  and are correlated close to a predefined correlation matrix.
+#'
+#'  `makeItems()` is being deprecated.
+#'  Use the `makeScales()` function instead.
 #'
 #'  `makeItems()` is wrapper function for:
 #'
@@ -78,6 +81,9 @@
 #' cor(df) |> round(3)
 #'
 makeItems <- function(n, means, sds, lowerbound, upperbound, cormatrix) {
+  message("NOTE:\nmakeItems() function is being deprecated
+              \nUse the makeScales() function in future.")
+
   ####
   ###  input parameters integrity checks
   ####

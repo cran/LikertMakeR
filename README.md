@@ -1,19 +1,20 @@
- 
-#  
+
+# 
 
   <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![metacran downloads total](https://cranlogs.r-pkg.org/badges/grand-total/LikertMakeR)](https://cran.r-project.org/package=LikertMakeR)
 [![metacran downloads last month](https://cranlogs.r-pkg.org/badges/last-month/LikertMakeR)](https://cran.r-project.org/package=LikertMakeR)
 [![R-CMD-check](https://github.com/WinzarH/LikertMakeR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/WinzarH/LikertMakeR/actions/workflows/R-CMD-check.yaml)
-[![Pkgdown](https://github.com/WinzarH/LikertMakeR/actions/workflows/pkgdown.yaml/badge.svg)](https://winzarh.github.io/LikertMakeR/)
+[![pkgdown](https://github.com/WinzarH/LikertMakeR/actions/workflows/pkgdown.yml/badge.svg?branch=main)](https://winzarh.github.io/LikertMakeR/)
+[![GitHub stars](https://img.shields.io/github/stars/WinzarH/LikertMakeR.svg?style=social&label=Star)](https://github.com/WinzarH/LikertMakeR)
   <!-- badges: end -->
   
 
 
 # LikertMakeR  <img src="man/figures/logo.png" align="center" height="134" alt="LikertMakeR" />
 
-(V 1.2.0  October 2025)
+(V 1.3.0  November 2025)
 
 Synthesise and correlate Likert scales, and similar rating-scale data, with 
 predefined first & second moments (mean and standard deviation), 
@@ -26,11 +27,14 @@ The package is intended for:
   1. "Reproducing" or "Reverse-engineering" rating-scale data for further 
   analysis and visualisation when only summary statistics have been reported, 
     
-  2. Teaching. Helping researchers and students to better understand the 
+  2. Teaching. Create data with known properties without the 
+  need to find or gather original data.
+  
+  3. Helping researchers and students to better understand the 
   relationships among scale properties, sample size, number of items, 
   _etc._ ...  
  
-  3. checking the feasibility of scale moments with given scale and 
+  4. checking the feasibility of scale moments with given scale and 
   correlation properties. 
 
  
@@ -51,7 +55,7 @@ Functions in this version of **_LikertMakeR_** are:
   constructs a random item correlation matrix of given 
   dimensions and predefined _Cronbach's Alpha_.
   
-  - [**_makeItems()_**](#makeitems) 
+  - [**_makeScales()_**](#makeScales) 
   is a wrapper function for _lfast()_ and _lcor()_ 
   to generate synthetic rating-scale data with predefined first and 
   second moments and a predefined correlation matrix.
@@ -71,6 +75,10 @@ Functions in this version of **_LikertMakeR_** are:
   - [**_makeRepeated()_**](#makerepeated) 
   Generate a dataset from summary statistics for _repeated-measures ANOVA_, 
   with options for correlation structure and diagnostics.
+  
+  - [**_makeScalesRegression()_**](#makeScalesRegression)
+  Generate synthetic rating-scale data that replicate reported 
+  regression results.
   
   - [_**correlateScales()**_](#correlatescales) generates a 
   multidimensional dataframe by combining several dataframes of 
@@ -115,7 +123,7 @@ social sciences because:
   1. they are in common usage and easily understood,
   
   2. In practice, all measures are bounded by the constraints of the 
-  measurement device, meaning that they also have upper and lower boundaries 
+  measurement tool, meaning that they also have upper and lower boundaries 
   and discrete units of measurement, which means that: 
   
   3. results and conclusions drawn from technically-correct non-parametric 
@@ -157,14 +165,12 @@ univariate statistics as they might ordinarily be reported.
 values so that the vectors are correlated.
 
 `makeCorrAlpha()` generates a correlation matrix from a predefined 
-_Cronbach's Alpha()_, enabling the user to apply `makeItems()` 
-to generate scale items that produce an exact _Cronbach's Alpha_. 
+_Cronbach's Alpha()_, enabling the user to apply `makeScales()` or `lcor()`
+to generate scale items or summated scales that produce an 
+exact _Cronbach's Alpha_. 
 `makeCorrLoadings()` generates a correlation matrix from factor loadings 
-data, enabling the user to apply `makeItems()` to generate 
+data, enabling the user to apply `makeScales()` to generate 
 multidimensional data.
-
-`makeItems()` will generate synthetic rating-scale data with predefined 
-first and second moments and a predefined correlation matrix. 
 
 `makeItemsScale()` generate a dataframe of rating scale items from a 
 summative scale and desired _Cronbach's Alpha_. 
@@ -367,7 +373,7 @@ ____
 
 #### makeCorrAlpha() usage
 
-      makeCorrAlpha(items, alpha, variance = 0.5, precision = 0)
+      makeCorrAlpha(items, alpha, variance = 0.5, precision = 0, sort_cors = FALSE)
 
 ##### makeCorrAlpha() arguments
 
@@ -385,12 +391,21 @@ ____
   A value of '2', or more, risks producing a matrix that is not 
   positive-definite, so not feasible.
   
-  - **_precision_**: a value between '0' and '3' to add some random 
+  -  **_precision_**: a value between '0' and '3' to add some random 
   variation around the target _Cronbach's Alpha_.
   Default = '0'.
   A value of '0' produces the desired _Alpha_, generally exact to two 
   decimal places. Higher values produce increasingly random values around 
   the desired _Alpha_.
+  
+  -  **_sort_cors_**: Logical. Default = `FALSE`. If `TRUE`, then runs more 
+  quickly, but produces a less natural correlation matrix. 
+  
+  - **_diagnostics_**: Logical. 
+  If `TRUE`, returns a list containing the correlation matrix and a 
+  diagnostics list (target/achieved alpha, average inter-item correlation, 
+  eigenvalues, PD flag, and key arguments).
+  If `FALSE` (default), returns the correlation matrix only. 
 
 #### NOTE
 
@@ -561,55 +576,59 @@ ____
 
 ## Generate a dataframe of rating scales from a correlation matrix and predefined moments
 
-### makeItems()
+### makeScales()
 
-**_makeItems()_** generates a dataframe of random discrete
-values from a _scaled Beta distribution_ so the data replicate a rating
-scale, and are correlated close to a predefined correlation matrix.
+**_makeScales()_** generates a dataframe of two or more rating-scale items, 
+or summated rating scales, 
+that are correlated close to a predefined correlation matrix.
 
-_makeItems()_ is a wrapper function for:
+_makeScales()_ is a wrapper function for:
 
-  - _lfast()_, which generates a vector that best fits the desired moments, and
+  - _lfast()_, which generates a vector random discrete values from 
+  a _scaled Beta distribution_ that best fits the desired moments, and
   
   - _lcor()_, which rearranges values in each column of the dataframe
   so they closely match the desired correlation matrix.
 
 
-#### _makeItems()_ usage 
+#### _makeScales()_ usage 
 
-    makeItems(n, means, sds, lowerbound, upperbound, cormatrix)
+    makeItems(n, means, sds, lowerbound, upperbound, items, cormatrix)
 
 #### _makeItems()_ arguments
 
-  - **_n_**: number of observations to generate
+  - **_n_**: number of observations to generate.
 
   - **_means_**: target means: a vector of length 'k' of mean values for each 
-  scale item
+  scale.
 
   - **_sds_**: target standard deviations: a vector of length 'k' of standard 
-  deviation values for each scale item
+  deviation values for each scale.
 
   - **_lowerbound_**: vector of length 'k' (same as rows & columns of 
-  correlation matrix) of values for lower bound of each scale item
-  (e.g. '1' for a 1-5 rating scale)
+  correlation matrix) of values for lower bound of each scale 
+  (e.g. '1' for a 1-5 rating scale). Default = '1'.
 
-  - **_upperbound_**:	vector of length 'k' (same as rows & columns of 
-  correlation matrix) of values for upper bound of each scale item 
-  (e.g. '5' for a 1-5 rating scale)
+  - **_upperbound_**:	vector of length 'k' of values for upper bound of each 
+  scale (e.g. '5' for a 1-5 rating scale). Default = '5'.
+  
+  - **_items_**: vector of length 'k' of number of items in each scale. 
+  Default = '1'.
 
   - **_cormatrix_**: target correlation matrix: a 'k' x 'k' square symmetric 
   matrix of values ranging between '-1 'and '+1', and '1' in the diagonal.
 
 
-### _makeItems()_ examples
+### _makeScales()_ examples
 
 #### define parameters
 
-    n <- 16
+    n <- 128
     dfMeans <- c(2.5, 3.0, 3.0, 3.5)
     dfSds <- c(1.0, 1.0, 1.5, 0.75)
     lowerbound <- rep(1, 4)
     upperbound <- rep(5, 4)
+    items <- c(5, 5, 4, 4)
     
     corMat <- matrix(
     c(
@@ -621,25 +640,27 @@ _makeItems()_ is a wrapper function for:
      nrow = 4, ncol = 4
     )
 
-
-
 #### apply function
-    df <- makeItems(
+    df <- makeScales(
        n = n,
        means = dfMeans,
        sds = dfSds,
        lowerbound = lowerbound,
        upperbound = upperbound,
+       items = items,
        cormatrix = corMat
      )
 
 #### test function
  
-    print(df)
+    str(df)
     
-    apply(df, 2, mean) |> round(3)
+    dfmoments <- data.frame(
+      mean = apply(df, 2, mean) |> round(3),
+      sd = apply(df, 2, sd) |> round(3)
+    ) |> t()
     
-    apply(df, 2, sd) |> round(3)
+    dfmoments
     
     cor(df) |> round(3)
 
@@ -897,7 +918,93 @@ structures:
      )
     
      str(out3)
+
+___
+
+## Generate rating-scale data that replicate reported regression results    
+
+### makeScalesRegression()
+
+Generates synthetic rating-scale data that replicates reported regression
+results: standardised betas, R<sup>2</sup>, and correlation matrix of independent 
+variables (if available).  
+
+#### makeScalesRegression() usage
+
+    makeScalesRegression <- (
+       n,  # sample size
+       beta_std,  # a vector of standardised betas
+       r_squared, # R_squared
+       iv_cormatrix = NULL,  # independent variables correlation matrix
+       iv_cor_mean = 0.3,  # if no iv_cormatrix average IV correlations 
+       iv_cor_variance = 0.01, # if no iv_cormatrix, variation in iv_cormatrix
+       iv_cor_range = c(-0.7, 0.7), # if no iv_cormatrix, range in iv_cormatrix
+       iv_means, # a vector of IV mean values
+       iv_sds,  # a vector of IV sd's
+       dv_mean,  # mean of DV
+       dv_sd,  # sd of DV
+       lowerbound_iv,  # a vector of lowerbounds for IV's
+       upperbound_iv,  # a vector of upperbounds for IV's
+       lowerbound_dv,  # lowerbound for DV
+       upperbound_dv,  # upperbound for DV
+       items_iv = 1,  # a vector of number of items in the IV's
+       items_dv = 1,  # number of items in DV
+       var_names = NULL,  # a vector of variable names
+       tolerance = 0.005  # close to target R-squared
+    )
+
+
+#### makeScalesRegression() examples
+
+    # Example 1: With provided IV correlation matrix
+    set.seed(123)
+    iv_corr <- matrix(c(1.0, 0.3, 0.3, 1.0), nrow = 2)
     
+    result1 <- makeScalesRegression(
+      n = 64,
+      beta_std = c(0.4, 0.3),
+      r_squared = 0.35,
+      iv_cormatrix = iv_corr,
+      iv_means = c(3.0, 3.5),
+      iv_sds = c(1.0, 0.9),
+      dv_mean = 3.8,
+      dv_sd = 1.1,
+      lowerbound_iv = 1,
+      upperbound_iv = 5,
+      lowerbound_dv = 1,
+      upperbound_dv = 5,
+      items_iv = 4,
+      items_dv = 4,
+      var_names = c("Attitude", "Intention", "Behaviour")
+    )
+    
+    print(result1)
+    head(result1$data)
+    
+    # Example 2: With optimisation (no IV correlation matrix)
+    set.seed(456)
+    result2 <- makeScalesRegression(
+      n = 64,
+      beta_std = c(0.3, 0.25, 0.2),
+      r_squared = 0.40,
+      iv_cormatrix = NULL, # Will be optimised
+      iv_cor_mean = 0.3,
+      iv_cor_variance = 0.02,
+      iv_means = c(3.0, 3.2, 2.8),
+      iv_sds = c(1.0, 0.9, 1.1),
+      dv_mean = 3.5,
+      dv_sd = 1.0,
+      lowerbound_iv = 1,
+      upperbound_iv = 5,
+      lowerbound_dv = 1,
+      upperbound_dv = 5,
+      items_iv = 4,
+      items_dv = 5
+    )
+    
+    # View optimised correlation matrix
+    print(result2$target_stats$iv_cormatrix)
+    print(result2$optimisation_info)
 
 
 ___

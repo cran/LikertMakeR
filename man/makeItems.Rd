@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeItems.R
 \name{makeItems}
 \alias{makeItems}
-\title{Synthesise rating-scale data with given first and second moments and a
+\title{Synthesise rating-scale item data with given first and second moments and a
 predefined correlation matrix}
 \usage{
 makeItems(n, means, sds, lowerbound, upperbound, cormatrix)
@@ -35,6 +35,9 @@ a dataframe of rating-scale values
 \code{makeItems()} generates a dataframe of random discrete
 values so the data replicate a rating scale,
 and are correlated close to a predefined correlation matrix.
+
+\code{makeItems()} is being deprecated.
+Use the \code{makeScales()} function instead.
 
 \code{makeItems()} is wrapper function for:
 \itemize{
