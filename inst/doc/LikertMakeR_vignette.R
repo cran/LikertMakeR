@@ -122,7 +122,7 @@ alpha(cor_matrix_4)
 
 eigenvalues(cor_matrix_4, 1)
 
-## ----cor_matrix_12------------------------------------------------------------
+## ----cor_matrix_12, message=FALSE---------------------------------------------
 ## define parameters
 items <- 12
 alpha <- 0.90
@@ -215,6 +215,7 @@ round(orthogonalItemCors, 2)
 eigenvalues(cormatrix = orthogonalItemCors, scree = TRUE)
 
 ## ----makeScalesExample1-------------------------------------------------------
+
 ## define parameters
 n <- 128
 dfMeans <- c(2.5, 3.0, 3.0, 3.5)
@@ -246,8 +247,12 @@ df <- makeScales(
   cormatrix = corMat
 )
 
+## ----str_makeScalesExample1---------------------------------------------------
+
 ## test the function
 str(df)
+
+## ----moments_makeScalesExample1-----------------------------------------------
 
 ### means should be correct to two decimal places
 dfmoments <- data.frame(
@@ -256,6 +261,8 @@ dfmoments <- data.frame(
 ) |> t()
 
 dfmoments
+
+## ----cors_makeScalesExample1--------------------------------------------------
 
 ### correlations should be correct to two decimal places
 cor(df) |> round(3)
@@ -333,9 +340,10 @@ lowerbound <- rep(1, k)
 upperbound <- rep(5, k)
 
 ## Generate Items
-myItems <- makeItems(
+myItems <- makeScales(
   n = n, means = myMeans, sds = mySds,
   lowerbound = lowerbound, upperbound = upperbound,
+  items = 1,
   cormatrix = myCorr
 )
 
@@ -353,7 +361,7 @@ myMoments
 ## Cronbach's Alpha of dataframe
 alpha(NULL, myItems)
 
-## ----fig5, fig.height=5, fig.width=5, fig.align='center', echo=FALSE, warning=FALSE, crop = TRUE, fig.cap="Summary of dataframe from makeItems() function"----
+## ----fig5, fig.height=5, fig.width=5, fig.align='center', echo=FALSE, warning=FALSE, crop = TRUE, fig.cap="Summary of dataframe from makeScales() function"----
 # Correlation panel
 
 panel.cor <- function(x, y) {
@@ -612,10 +620,11 @@ cor_1 <- makeCorrAlpha(items = 4, alpha = 0.80)
 means_1 <- c(2.5, 2.5, 3.0, 3.5)
 sds_1 <- c(0.75, 0.85, 0.85, 0.75)
 
-#### apply makeItems() function
-Att_1 <- makeItems(
+#### apply makeScales() function
+Att_1 <- makeScales(
   n = n, means = means_1, sds = sds_1,
   lowerbound = rep(lower, 4), upperbound = rep(upper, 4),
+  items = 1,
   cormatrix = cor_1
 )
 
@@ -628,10 +637,11 @@ cor_2 <- makeCorrAlpha(items = 5, alpha = 0.85)
 means_2 <- c(2.5, 2.5, 3.0, 3.0, 3.5)
 sds_2 <- c(0.75, 0.85, 0.75, 0.85, 0.75)
 
-#### apply makeItems() function
-Att_2 <- makeItems(
+#### apply makeScales() function
+Att_2 <- makeScales(
   n, means_2, sds_2,
   rep(lower, 5), rep(upper, 5),
+  items = 1,
   cor_2
 )
 
@@ -644,10 +654,11 @@ cor_3 <- makeCorrAlpha(items = 6, alpha = 0.90)
 means_3 <- c(2.5, 2.5, 3.0, 3.0, 3.5, 3.5)
 sds_3 <- c(0.75, 0.85, 0.85, 1.0, 0.75, 0.85)
 
-#### apply makeItems() function
-Att_3 <- makeItems(
+#### apply makeScales() function
+Att_3 <- makeScales(
   n, means_3, sds_3,
   rep(lower, 6), rep(upper, 6),
+  items = 1,
   cor_3
 )
 
@@ -828,6 +839,41 @@ print(evals)
 ## ----fig8, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
 evals <- eigenvalues(correlationMatrix, 1)
 print(evals)
+
+## ----reliabilityExample, warning=FALSE, message=FALSE-------------------------
+
+## create dataset
+my_cor <- LikertMakeR::makeCorrAlpha(
+  items = 4,
+  alpha = 0.80
+)
+
+my_data <- LikertMakeR::makeScales(
+  n = 64,
+  means = c(2.75, 3.00, 3.25, 3.50),
+  sds = c(1.25, 1.50, 1.30, 1.25),
+  lowerbound = rep(1, 4),
+  upperbound = rep(5, 4),
+  cormatrix = my_cor
+)
+
+## run function
+reliability(my_data)
+
+reliability(
+  my_data,
+  include = c("lambda6", "polychoric")
+)
+
+
+## bootstrapped Confidence intervals can be slow!
+reliability(
+  my_data,
+  include = "polychoric",
+  ci = TRUE,
+  n_boot = 64
+)
+
 
 ## ----eval = FALSE-------------------------------------------------------------
 # n <- 128

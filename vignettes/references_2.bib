@@ -1,16 +1,43 @@
 
-
-@Manual{winzar2022,
+@Manual{winzar2025,
   title = {LikertMakeR: Synthesise and correlate Likert-scale
-and related rating-scale data with predefined first & second moments},
+and related rating-scale data based on summary statistics},
   author = {Winzar, Hume},
-  abstract = {LikertMakeR synthesises Likert scale and related rating-scale data with predefined means and standard deviations, and optionally correlates these vectors to fit a predefined correlation matrix or Cronbach's Alpha.},
-  journal = {The Comprehensive R Archive Network (CRAN)},
+  abstract = {LikertMakeR synthesises Likert scale and related rating-scale data with predefined means and standard deviations, and correlates these vectors to fit summary statistics such as Cronbach's alpha, paired and repeated samples, regression and more.},
+  publisher = {The Comprehensive R Archive Network (CRAN)},
   month = {12},
-  year = {2022},
-  version = {1.1.0 (2025)},
-  url = {https://CRAN.R-project.org/package=LikertMakeR},
+  year = {2025},
+  version = {1.4.0},
+  url = {https://CRAN.R-project.org/package=LikertMakeR}
 }
+
+@article{cronbach1951,
+  title={Coefficient alpha and the internal structure of tests},
+  author={Cronbach, Lee J},
+  journal={psychometrika},
+  volume={16},
+  number={3},
+  pages={297--334},
+  year={1951},
+  publisher={Springer-Verlag}
+}
+
+
+@article{cronbach2004,
+author = {Lee J. Cronbach and Richard J. Shavelson},
+title ={My Current Thoughts on Coefficient Alpha and Successor Procedures},
+journal = {Educational and Psychological Measurement},
+volume = {64},
+number = {3},
+pages = {391-418},
+year = {2004},
+doi = {10.1177/0013164404266386},
+URL = {https://doi.org/10.1177/0013164404266386},
+eprint = {https://doi.org/10.1177/0013164404266386},
+abstract = { In 1997, noting that the 50th anniversary of the publication of “Coefficient Alpha and the Internal Structure of Tests” was fast approaching, Lee Cronbach planned what have become the notes published here. His aim was to point out the ways in which his views on coefficient alpha had evolved, doubting now that the coefficient was the best way of judging the reliability of an instrument to which it was applied. Tracing in these notes, in vintage Cronbach style, his thinking before, during, and after the publication of the alpha paper, his “current thoughts” on coefficient alpha are that alpha covers only a small perspective of the range of measurement uses for which reliability information is needed and that it should be viewed within a much larger system of reliability analysis, generalizability theory. }
+}
+
+
 
 
 @Manual{psych,
@@ -21,31 +48,20 @@ and related rating-scale data with predefined first & second moments},
   address = {Evanston, Illinois},
   year = {2024},
   note = {R package version 2.4.12},
-  url = {https://CRAN.R-project.org/package=psych},
+  url = {https://CRAN.R-project.org/package=psych}
 }
 
 
-@Manual{rosetta,
-  title = {rosetta: Parallel Use of Statistical Packages in Teaching},
-  author = {Gjalt-Jorn Peters and Peter Verboon},
-  year = {2023},
-  note = {R package version 0.3.12},
-  url = {https://r-packages.gitlab.io/rosetta/},
-}
-
-
-@article{Jennrich1970,
-author = {Robert I. Jennrich},
-title = {An Asymptotic χ2 Test for the Equality of Two Correlation Matrices},
-journal = {Journal of the American Statistical Association},
-volume = {65},
-number = {330},
-pages = {904--912},
-year = {1970},
-publisher = {ASA Website},
-doi = {10.1080/01621459.1970.10481133},
-URL = {https://doi.org/10.1080/01621459.1970.10481133},
-eprint = {https://doi.org/10.1080/01621459.1970.10481133}
+@Article{Jennrich1970,
+  author    = {Robert I. Jennrich},
+  journal   = {Journal of the American Statistical Association},
+  title     = {An Asymptotic χ2 Test for the Equality of Two Correlation Matrices},
+  year      = {1970},
+  number    = {330},
+  pages     = {904--912},
+  volume    = {65},
+  doi       = {10.1080/01621459.1970.10481133},
+  publisher = {ASA Website}
 }
 
 
@@ -57,11 +73,75 @@ eprint = {https://doi.org/10.1080/01621459.1970.10481133}
   address = {Evanston, Illinois},
   year = {2024},
   note = {R package version 2.4.3},
-  url = {https://CRAN.R-project.org/package=psychTools},
+  url = {https://CRAN.R-project.org/package=psychTools}
+}
+
+@book{mcdonald2013test,
+  title={Test theory: A unified treatment},
+  author={McDonald, Roderick P},
+  year={2013},
+  publisher={psychology press}
+}
+
+@article{hancock2001,
+  title={Rethinking construct reliability within latent variable systems},
+  author={Hancock, Gregory R and Mueller, Ralph O},
+  journal={Structural equation modeling: Present and future},
+  volume={195},
+  number={216},
+  pages={60--70},
+  year={2001},
+  publisher={Lincolnwood}
+}
+
+@article{xiao2023,
+  title={Performance of coefficient alpha and its alternatives: Effects of different types of non-normality},
+  author={Xiao, Leifeng and Hau, Kit-Tai},
+  journal={Educational and Psychological Measurement},
+  volume={83},
+  number={1},
+  pages={5--27},
+  year={2023},
+  publisher={Sage Publications Sage CA: Los Angeles, CA}
 }
 
 
-@article{Likert1932,
+@article{zumbo2007,
+  title={Ordinal versions of coefficients alpha and theta for Likert rating scales},
+  author={Zumbo, Bruno D and Gadermann, Anne M and Zeisser, Cornelia},
+  journal={Journal of modern applied statistical methods},
+  volume={6},
+  number={1},
+  pages={4},
+  year={2007}
+}
+
+
+@article{gadermann2012,
+  title={Estimating ordinal reliability for Likert-type and ordinal item response data: A conceptual, empirical, and practical guide.},
+  author={Gadermann, Anne M and Guhn, Martin and Zumbo, Bruno D},
+  journal={Practical assessment, research \& evaluation},
+  volume={17},
+  number={3},
+  pages={n3},
+  year={2012},
+  publisher={ERIC}
+}
+
+@article{holgado2010,
+  title={Polychoric versus Pearson correlations in exploratory and confirmatory factor analysis of ordinal variables},
+  author={Holgado--Tello, Francisco Pablo and Chac{\'o}n--Moscoso, Salvador and Barbero--Garc{\'\i}a, Isabel and Vila--Abad, Enrique},
+  journal={Quality \& Quantity},
+  volume={44},
+  number={1},
+  pages={153--166},
+  year={2010},
+  publisher={Springer}
+}
+
+
+
+ticle{Likert1932,
 author = {Rensis Likert},
 title = {A technique for the measurement of attitudes},
 journal = {Archives of Psychology},
@@ -87,16 +167,15 @@ URL = {https://archive.org/details/likert-1932/}
 }
 
 
-@article{gronneberg2022,
+@Article{gronneberg2022,
   author  = {Grønneberg, Steffen and Foldnes, Njål and Marcoulides, K. M.},
-  title   = {covsim: An R Package for Simulating Non-Normal Data for Structural Equation Models Using Copulas},
   journal = {Journal of Statistical Software},
+  title   = {covsim: An R Package for Simulating Non-Normal Data for Structural Equation Models Using Copulas},
   year    = {2022},
-  volume  = {102},
   number  = {1},
   pages   = {1--45},
-  doi     = {10.18637/jss.v102.i03},
-  url     = {https://doi.org/10.18637/jss.v102.i03}
+  volume  = {102},
+  doi     = {10.18637/jss.v102.i03}
 }
 
 
@@ -149,6 +228,17 @@ URL = {https://archive.org/details/likert-1932/}
 }
 
 
+@article{revelle2009,
+  title={Coefficients alpha, beta, omega, and the glb: Comments on Sijtsma},
+  author={Revelle, William and Zinbarg, Richard E},
+  journal={Psychometrika},
+  volume={74},
+  number={1},
+  pages={145--154},
+  year={2009},
+  publisher={Springer-Verlag}
+}
+
 @article{touloumis2016,
   author  = {Touloumis, Anastasios},
   title   = {Simulating Correlated Binary and Multinomial Responses under Marginal Model Specification: The SimCorMultRes Package},
@@ -169,7 +259,7 @@ URL = {https://archive.org/details/likert-1932/}
     organization = {R Foundation for Statistical Computing},
     address = {Vienna, Austria},
     year = {2025},
-    url = {https://www.R-project.org/},
+    url = {https://www.R-project.org/}
   }
 
 @Manual{BWStest-Manual,
@@ -178,7 +268,7 @@ URL = {https://archive.org/details/likert-1932/}
     author = {Steven E. Pav},
     year = {2023},
     note = {R package version 0.2.3},
-    url = {https://github.com/shabbychef/BWStest},
+    url = {https://github.com/shabbychef/BWStest}
 }
 
 @Manual{BWStest,
@@ -186,7 +276,7 @@ URL = {https://archive.org/details/likert-1932/}
 	title = {{B}{W}{S}test: {R} package for the {B}aumgartner {W}eiss {S}chindler 2-sample test of equal probability distributions.},
 	url = {https://github.com/shabbychef/BWStest},
 	year = {2023},
-	note = {R package version 0.2.3},
+	note = {R package version 0.2.3}
 }
 
 
@@ -257,17 +347,16 @@ url={https://doi.org/10.1007/BF02762032}
 	author = {David M. Condon},
 	title = {{S}{A}{P}{A}-{P}roject | {Y}our {C}ustomized {P}ersonality {P}rofile {R}eport --- sapa-project.org},
 	howpublished = {\url{https://www.sapa-project.org/}},
-	year = {2023},
-	note = {[Accessed 09-01-2025]},
+	year = {2023}
 }
 
 
-@misc{personalityproject,
-	author = {Wilelle, William},
-  title = {{T}he {P}ersonality {P}roject --- personality-project.org},
-	howpublished = {\url{https://www.personality-project.org/}},
-	year = {2023},
-	note = {[Accessed 09-01-2025]},
+@Misc{personalityproject,
+  author       = {Wilelle, William},
+  howpublished = {\url{https://www.personality-project.org/}},
+  note         = {[Accessed 09-01-2025]},
+  title        = {{T}he {P}ersonality {P}roject --- personality-project.org},
+  date         = {2023}
 }
 
 
@@ -309,12 +398,18 @@ url={https://doi.org/10.1007/BF02762032}
   doi={10.1080/01621459.1967.10482916}
 }
 
+@Book{rosetta,
+  title  = {rosetta: Parallel Use of Statistical Packages in Teaching},
+  author = {Gjalt-Jorn Peters and Peter Verboon},
+  year   = {2023},
+  url    = {https://rosettastats.com}
+}
 
-  @Manual{rosetta,
-    title = {rosetta: Parallel Use of Statistical Packages in Teaching},
-    author = {Gjalt-Jorn Peters and Peter Verboon},
-    year = {2023},
-    note = {R package version 0.3.12},
-    url = {https://CRAN.R-project.org/package=rosetta},
-    doi = {10.32614/CRAN.package.rosetta},
-  }
+@Book{mcdonald2013test,
+  author    = {McDonald, Roderick P},
+  publisher = {psychology press},
+  title     = {Test theory: A unified treatment},
+  year      = {2013}
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

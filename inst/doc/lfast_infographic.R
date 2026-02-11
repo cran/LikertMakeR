@@ -1,0 +1,3 @@
+## ----logo, fig.align='center', echo=FALSE, out.width = '95%'------------------
+knitr::include_graphics("img/lfast_infographic.png")
+

@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Hume Winzar" />
+
+
+<title>likertMakeR::reliability()</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+border-bottom: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic tfoot tr td {
+border: 0;
+}
+.lightable-classic tfoot tr:first-child td {
+border-top: 0.14em solid #111111;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+border-bottom: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 tfoot tr td {
+border: 0;
+}
+.lightable-classic-2 tfoot tr:first-child td {
+border-top: 3px double #111111;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material tfoot tr td {
+border: 0;
+}
+.lightable-material tfoot tr:first-child td {
+border-top: 1px solid #EEE;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark tfoot tr td {
+border: 0;
+}
+.lightable-material-dark tfoot tr:first-child td {
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper tfoot tr td {
+border: 0;
+}
+.lightable-paper tfoot tr:first-child td {
+border-top: 1px solid #00000020;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">likertMakeR::reliability()</h1>
+<h4 class="author">Hume Winzar</h4>
+<h4 class="date">December 2025</h4>
+
+
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="at">collapse =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">comment =</span> <span class="st">&quot;#&gt;&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>)</span></code></pre></div>
+<!-- END setup chunks -->
+<div id="reliability-estimation-with-likertmakerreliability" class="section level2">
+<h2>Reliability estimation with
+<code>LikertMakeR::reliability()</code></h2>
+<p>The <code>reliability()</code> function estimates a range of internal
+consistency reliability coefficients for <strong>single-factor Likert
+and rating-scale measures</strong>. It is designed to work naturally
+with synthetic data generated by <strong>LikertMakeR</strong>, but
+applies equally to real survey data.</p>
+<p>Unlike many reliability functions, <code>reliability()</code>:</p>
+<ul>
+<li>presents <strong>multiple coefficients in a tidy
+table</strong>,</li>
+<li>provides <strong>bootstrap confidence intervals</strong> when
+requested,</li>
+<li>supports <strong>ordinal (polychoric-based) reliability</strong>,
+and</li>
+<li>includes <strong>explicit diagnostics</strong> explaining when
+ordinal estimates are not feasible.</li>
+</ul>
+<div id="when-should-you-use-reliability" class="section level3">
+<h3>When should you use <code>reliability()</code>?</h3>
+<p>Use <code>reliability()</code> when:</p>
+<ul>
+<li>your scale is intended to measure <strong>one underlying
+construct</strong>,</li>
+<li>items are <strong>Likert-type or bounded rating scales</strong>,
+and</li>
+<li>you want <strong>transparent, reproducible reliability
+estimates</strong>, especially for teaching, simulation, or methods
+work.</li>
+</ul>
+<p>The function is <strong>not intended for multidimensional scales or
+SEM models</strong>; excellent alternatives already exist for those
+purposes (e.g. <code>lavaan</code>, <code>semTools</code>).</p>
+<hr />
+</div>
+</div>
+<div id="function-usage" class="section level2">
+<h2>Function usage</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">reliability</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  data,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">include =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">ci =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">ci_level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">n_boot =</span> <span class="dv">1000</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">na_method =</span> <span class="fu">c</span>(<span class="st">&quot;pairwise&quot;</span>, <span class="st">&quot;listwise&quot;</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">min_count =</span> <span class="dv">2</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="arguments" class="section level2">
+<h2>Arguments</h2>
+<div id="data" class="section level3">
+<h3><code>data</code></h3>
+<p>An <code>n × k</code> data frame or matrix containing item responses,
+where rows correspond to respondents and columns correspond to
+items.</p>
+<hr />
+</div>
+<div id="include" class="section level3">
+<h3><code>include</code></h3>
+<p>A character vector specifying which additional reliability
+coefficients to compute.</p>
+<p>Possible values are:</p>
+<ul>
+<li><p><code>&quot;none&quot;</code> (default)<br />
+Computes <strong>Cronbach’s alpha</strong> and <strong>McDonald’s omega
+(total)</strong> using Pearson correlations.</p></li>
+<li><p><code>&quot;lambda6&quot;</code><br />
+Adds <strong>Guttman’s lambda-6</strong>, computed via
+<code>psych::alpha()</code><br />
+(requires the optional package <strong>psych</strong>).</p></li>
+<li><p><code>&quot;omega_h&quot;</code><br />
+Adds <strong>McDonald’s omega hierarchical (<span class="math inline">\(\omega_h\)</span>)</strong>, also known as
+<strong>Coefficient H</strong>.<br />
+This coefficient estimates the <strong>maximum reliability of the
+general factor</strong> under a single-factor model, assuming optimal
+weighting of items.</p></li>
+<li><p><code>&quot;polychoric&quot;</code><br />
+Adds <strong>ordinal reliability estimates</strong>, computed from
+polychoric correlations:</p>
+<ul>
+<li>ordinal alpha (Zumbo’s alpha),</li>
+<li>ordinal omega (total).</li>
+</ul></li>
+</ul>
+<p>Multiple options may be supplied, for example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>include <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;lambda6&quot;</span>, <span class="st">&quot;polychoric&quot;</span>)</span></code></pre></div>
+</div>
+<div id="ci" class="section level3">
+<h3><code>ci</code></h3>
+<p>Logical.<br />
+If <code>TRUE</code>, confidence intervals are computed using a
+<strong>nonparametric bootstrap</strong>.</p>
+<p>Default is <code>FALSE</code>.</p>
+<hr />
+</div>
+<div id="ci_level" class="section level3">
+<h3><code>ci_level</code></h3>
+<p>Confidence level for bootstrap intervals.<br />
+Default is <code>0.95</code>.</p>
+<hr />
+</div>
+<div id="n_boot" class="section level3">
+<h3><code>n_boot</code></h3>
+<p>Number of bootstrap resamples used when <code>ci = TRUE</code>.<br />
+Default is <code>1000</code>.</p>
+<p>Larger values reduce <em>Monte Carlo</em> error but increase
+computation time, especially for ordinal (polychoric-based) reliability
+estimates.</p>
+<hr />
+</div>
+<div id="na_method" class="section level3">
+<h3><code>na_method</code></h3>
+<p>How missing values are handled:</p>
+<ul>
+<li><code>&quot;pairwise&quot;</code> (default): correlations use all available
+pairs,</li>
+<li><code>&quot;listwise&quot;</code>: rows with any missing values are removed
+before analysis.</li>
+</ul>
+<hr />
+</div>
+<div id="min_count" class="section level3">
+<h3><code>min_count</code></h3>
+<p>Minimum observed frequency per response category required to attempt
+polychoric correlations.<br />
+Default is <code>2</code>.</p>
+<p>Ordinal reliability estimates are skipped if any item contains
+categories with fewer than <code>min_count</code> observations. When
+this occurs, diagnostics are stored in the returned object and may be
+inspected using <code>ordinal_diagnostics()</code>.</p>
+<hr />
+</div>
+<div id="digits" class="section level3">
+<h3><code>digits</code></h3>
+<p>Number of decimal places used when printing estimates.<br />
+Default is <code>3</code>.</p>
+<hr />
+</div>
+<div id="verbose" class="section level3">
+<h3><code>verbose</code></h3>
+<p>Logical.<br />
+If <code>TRUE</code>, warnings and progress indicators are
+displayed.</p>
+<p>Default is <code>TRUE</code>.</p>
+<hr />
+</div>
+</div>
+<div id="reliability-coefficients-returned" class="section level2">
+<h2>Reliability coefficients returned</h2>
+<div id="pearson-based-coefficients-always-available" class="section level3">
+<h3>Pearson-based coefficients (always available)</h3>
+<ul>
+<li><p><strong>Cronbach’s alpha</strong><br />
+Computed from the Pearson correlation matrix.</p></li>
+<li><p><strong>McDonald’s omega (total)</strong><br />
+Computed from the leading eigenvalue of the correlation matrix, assuming
+a single common factor.</p></li>
+</ul>
+<p>These estimates are appropriate when Likert-scale responses are
+treated as approximately interval-scaled.</p>
+<hr />
+</div>
+<div id="ordinal-polychoric-based-coefficients" class="section level3">
+<h3>Ordinal (polychoric-based) coefficients</h3>
+<p>When <code>include = &quot;polychoric&quot;</code>:</p>
+<ul>
+<li><p><strong>Ordinal alpha (Zumbo’s alpha)</strong><br />
+Cronbach’s alpha computed from the <strong>polychoric correlation
+matrix</strong>.</p></li>
+<li><p><strong>Ordinal omega (total)</strong><br />
+McDonald’s omega computed from the polychoric correlation
+matrix.</p></li>
+</ul>
+<p>These estimates are often preferred when items are clearly ordinal,
+response distributions are skewed, or floor/ceiling effects are
+present.</p>
+<hr />
+</div>
+</div>
+<div id="ordinal-diagnostics-and-safeguards" class="section level2">
+<h2>Ordinal diagnostics and safeguards</h2>
+<p>Ordinal reliability estimation can fail when response categories are
+sparse (e.g., very few observations in extreme categories).</p>
+<p>When this occurs:</p>
+<ul>
+<li>ordinal estimates are <strong>skipped rather than
+forced</strong>,</li>
+<li>a warning is issued,</li>
+<li>diagnostics are stored in the returned object.</li>
+</ul>
+<p>Diagnostics may be inspected using:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">ordinal_diagnostics</span>(result)</span></code></pre></div>
+<hr />
+<div id="hierarchical-reliability-omega_h-coefficient-h" class="section level3">
+<h3>Hierarchical reliability: <span class="math inline">\(\omega_h\)</span> (Coefficient H)</h3>
+<p>When <code>include = &quot;omega_h&quot;</code>, <code>reliability()</code>
+reports <strong>McDonald’s omega hierarchical</strong> (<span class="math inline">\(\omega_h\)</span>), also known as
+<strong>Coefficient H</strong>.</p>
+<p><span class="math inline">\(\omega_h\)</span> answers a different
+question from <span class="math inline">\(\alpha\)</span> or <span class="math inline">\(\omega\)</span> (total):</p>
+<blockquote>
+<p><em>How well would the underlying latent factor be measured if the
+best possible linear combination of items were used?</em></p>
+</blockquote>
+<p>Key characteristics of <span class="math inline">\(\omega_h\)</span>:</p>
+<ul>
+<li>It is a <strong>model-based upper bound</strong> on reliability</li>
+<li>It reflects <strong>factor determinacy</strong>, not observed-score
+reliability</li>
+<li>It assumes a <strong>single dominant common factor</strong></li>
+<li>It is insensitive to scale length but sensitive to factor
+structure</li>
+</ul>
+<p><span class="math inline">\(\omega_h\)</span> is therefore best
+interpreted as a <strong>diagnostic index</strong>, rather than as a
+direct estimate of the reliability of observed summed scores.</p>
+<div id="why-no-confidence-intervals-for-omega_h" class="section level4">
+<h4>Why no confidence intervals for <span class="math inline">\(\omega_h\)</span>?</h4>
+<p>Confidence intervals are <strong>not reported</strong> for <span class="math inline">\(\omega_h\)</span>.</p>
+<p>This is intentional:</p>
+<ul>
+<li><span class="math inline">\(\omega_h\)</span> is a <strong>maximal
+reliability bound</strong>, not a descriptive statistic</li>
+<li>Its sampling distribution is <strong>highly non-normal</strong></li>
+<li>Bootstrap confidence intervals are often <strong>unstable or
+misleading</strong></li>
+<li>There is <strong>no agreed inferential framework</strong> for <span class="math inline">\(\omega_h\)</span> in the literature</li>
+</ul>
+<p>Accordingly, <span class="math inline">\(\omega_h\)</span> is
+reported as a <strong>point estimate only</strong>, with explanatory
+notes in the output table.</p>
+<hr />
+</div>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<div id="create-a-synthetic-dataset" class="section level3">
+<h3>Create a synthetic dataset</h3>
+<p>The example below generates a four-item single-factor scale with a
+target Cronbach’s alpha of 0.80, using functions from
+<strong>LikertMakeR</strong>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># example correlation matrix</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>my_cor <span class="ot">&lt;-</span> LikertMakeR<span class="sc">::</span><span class="fu">makeCorrAlpha</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">items =</span> <span class="dv">4</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.80</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; reached max iterations (1600) - best mean difference: 8.3e-05</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co"># example correlated dataframe</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> LikertMakeR<span class="sc">::</span><span class="fu">makeScales</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">64</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="at">means =</span> <span class="fu">c</span>(<span class="fl">2.75</span>, <span class="fl">3.00</span>, <span class="fl">3.25</span>, <span class="fl">3.50</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">sds =</span> <span class="fu">c</span>(<span class="fl">1.25</span>, <span class="fl">1.50</span>, <span class="fl">1.30</span>, <span class="fl">1.25</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="at">lowerbound =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">4</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">upperbound =</span> <span class="fu">rep</span>(<span class="dv">5</span>, <span class="dv">4</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="at">cormatrix =</span> my_cor</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>)</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; Variable  1 :  item01  -</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; Variable  2 :  item02  -</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; best solution in 1028 iterations</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; Variable  3 :  item03  -</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; Variable  4 :  item04  -</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; Arranging data to match correlations</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; Successfully generated correlated variables</span></span></code></pre></div>
+</div>
+<div id="basic-reliability-estimates" class="section level3">
+<h3>Basic reliability estimates</h3>
+<p>By default, <code>reliability()</code> returns Pearson-based
+Cronbach’s alpha and McDonald’s omega (total), assuming a single common
+factor.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># $\alpha$ and $\omega$</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">reliability</span>(my_data)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;    coef_name estimate n_items n_obs                notes</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt;        alpha     0.80       4    64 Pearson correlations</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;  omega_total     0.87       4    64 1-factor eigen omega</span></span></code></pre></div>
+</div>
+<div id="including-additional-coefficients" class="section level3">
+<h3>Including additional coefficients</h3>
+<p>Additional reliability coefficients may be requested using the
+<code>include</code> argument.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># $\alpha$, $\omega$ (total), $\lambda 6$, $\omega_h$, and ordinal variants</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">reliability</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  my_data,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">include =</span> <span class="fu">c</span>(<span class="st">&quot;lambda6&quot;</span>, <span class="st">&quot;omega_h&quot;</span>, <span class="st">&quot;polychoric&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;            coef_name estimate n_items n_obs</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;                alpha    0.800       4    64</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;          omega_total    0.870       4    64</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;              lambda6    0.842       4    64</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;              omega_h    0.805       4    64</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;        ordinal_alpha    0.750       4    64</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;  ordinal_omega_total    0.843       4    64</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;                                                notes</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;                                 Pearson correlations</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt;                                 1-factor eigen omega</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt;                                       psych::alpha()</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt;     Coefficient H (1-factor FA, maximal reliability)</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co">#&gt;                              Polychoric correlations</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co">#&gt;  Polychoric correlations | Ordinal CIs not requested</span></span></code></pre></div>
+<p>The available options are:</p>
+<ul>
+<li><p><code>&quot;lambda6&quot;</code><br />
+Adds <strong>Guttman’s lambda-6</strong>, computed using
+<code>psych::alpha()</code>.<br />
+This option requires the suggested package
+<strong>psych</strong>.</p></li>
+<li><p><code>&quot;omega_h&quot;</code><br />
+Adds <strong>omega hierarchical (Coefficient H)</strong>, a model-based
+upper bound on reliability that reflects how well the general factor is
+measured. <span class="math inline">\(\omega_h\)</span> is reported as a
+point estimate only and is best used as a diagnostic indicator of factor
+strength rather than as observed-score reliability.</p></li>
+<li><p><code>&quot;polychoric&quot;</code><br />
+Adds <strong>ordinal (polychoric-based) reliability estimates</strong>,
+including ordinal alpha (Zumbo’s alpha) and ordinal omega
+(total).</p></li>
+</ul>
+<p>Multiple options may be supplied simultaneously. If
+<code>&quot;none&quot;</code> is included alongside other options, it is
+ignored.</p>
+<p>If ordinal reliability estimates cannot be computed — most commonly
+due to sparse response categories — they are skipped automatically. In
+such cases, the returned object contains diagnostic information
+explaining why the estimates were omitted.</p>
+</div>
+<div id="when-should-i-use-each-option" class="section level3">
+<h3>When should I use each option?</h3>
+<p>By default, <code>reliability()</code> reports Cronbach’s alpha and
+McDonald’s omega computed from Pearson correlations. This is appropriate
+for most teaching, exploratory, and applied settings, especially when
+Likert items have five or more categories and reasonably symmetric
+distributions.</p>
+<p>Use <code>include = &quot;lambda6&quot;</code> when you want an additional
+lower-bound reliability estimate that is less sensitive to
+tau-equivalence assumptions. Guttman’s lambda-6 is often reported
+alongside alpha and omega in methodological comparisons and requires the
+<strong>psych</strong> package.</p>
+<p>Use <code>include = &quot;omega_h&quot;</code> when you want to assess the
+<strong>strength and clarity of the general factor</strong> underlying a
+scale. <span class="math inline">\(\omega_h\)</span> is particularly
+useful when evaluating whether a set of items meaningfully reflects a
+single latent construct, but it should not be interpreted as the
+reliability of summed or averaged scores.</p>
+<p>Use <code>include = &quot;polychoric&quot;</code> when item responses are
+clearly ordinal and category distributions are well populated. In this
+case, the function computes ordinal alpha (Zumbo’s alpha) and ordinal
+omega based on polychoric correlations. Ordinal methods are most
+appropriate when response categories are few (e.g., 4–5 points) and when
+treating items as continuous may be questionable. If response categories
+are sparse, ordinal estimates are skipped and diagnostics are provided
+to explain why.</p>
+</div>
+<div id="notes-on-computation" class="section level3">
+<h3>Notes on computation</h3>
+<p>All reliability coefficients in <code>reliability()</code> are
+computed under the assumption of a <strong>single common
+factor</strong>. The function is intended for unidimensional scales and
+does not perform factor extraction or dimensionality testing.</p>
+<p>Cronbach’s alpha and McDonald’s omega are computed from
+<strong>Pearson correlations</strong> by default. When
+<code>include = &quot;polychoric&quot;</code> is specified, ordinal reliability
+estimates are computed using <strong>polychoric correlations</strong>,
+corresponding to <em>Zumbo’s ordinal alpha</em> and <em>ordinal omega
+total</em>.</p>
+<p>Ordinal reliability estimates may be <strong>skipped
+automatically</strong> when:</p>
+<ul>
+<li>an item has fewer than two observed response categories, or</li>
+<li>one or more response categories occur fewer than
+<code>min_count</code> times.</li>
+</ul>
+<p>In these cases, the function returns <code>NA</code> for ordinal
+estimates and stores diagnostic information explaining the decision.
+These diagnostics can be inspected using
+<code>ordinal_diagnostics()</code>.</p>
+<p>When <code>ci = TRUE</code>, confidence intervals are obtained using
+a <strong>nonparametric bootstrap</strong>. For ordinal reliability
+estimates, bootstrap resamples may fail if polychoric correlations
+cannot be estimated in some resampled datasets. Such failures are
+tracked internally and reported in the output notes. Increasing
+<code>n_boot</code> can improve the stability of ordinal confidence
+intervals when the proportion of successful bootstrap draws is high but
+not complete.</p>
+<p>For transparency, methodological details about estimation methods and
+bootstrap performance are reported alongside point estimates in the
+returned table.</p>
+</div>
+</div>
+<div id="choosing-a-reliability-coefficient-a-practical-decision-guide" class="section level2">
+<h2>Choosing a Reliability Coefficient: A Practical Decision Guide</h2>
+<p>Researchers and students are often faced with multiple reliability
+coefficients and little guidance on when each should be used. This
+section provides a practical, defensible guide for choosing among
+Cronbach’s alpha, McDonald’s omega, and their ordinal counterparts when
+working with Likert-type and rating-scale data.</p>
+<p>This guidance assumes a single-factor scale, which is the design
+focus of LikertMakeR.</p>
+<div id="step-1-what-kind-of-data-do-you-have" class="section level3">
+<h3>Step 1: What kind of data do you have?</h3>
+<div id="continuous-or-approximately-continuous-items" class="section level4">
+<h4>Continuous or approximately continuous items</h4>
+<p>Examples:</p>
+<ul>
+<li><p>Scale scores with many response options</p></li>
+<li><p>Visual analogue scales</p></li>
+<li><p>Aggregated or averaged ratings</p></li>
+</ul>
+<p>→ Pearson correlations are usually appropriate.</p>
+</div>
+<div id="ordinal-likert-type-items" class="section level4">
+<h4>Ordinal (Likert-type) items</h4>
+<p>Examples:</p>
+<ul>
+<li><p>Single 5-point or 7-point agreement scales</p></li>
+<li><p>Frequency scales with clear category boundaries</p></li>
+</ul>
+<p>→ Ordinal (polychoric-based) methods are often more appropriate,
+especially when responses are skewed or unevenly distributed.</p>
+</div>
+</div>
+<div id="step-2-choosing-between-alpha-and-omega" class="section level3">
+<h3>Step 2: Choosing between <span class="math inline">\(\alpha\)</span>
+and <span class="math inline">\(\omega\)</span></h3>
+<div id="cronbachs-alpha-alpha" class="section level4">
+<h4>Cronbach’s alpha (<span class="math inline">\(\alpha\)</span>)</h4>
+<p>Cronbach’s alpha is the most widely reported reliability coefficient
+and is based on average inter-item correlations.</p>
+<p>Use alpha when:</p>
+<ul>
+<li><p>You need comparability with legacy literature</p></li>
+<li><p>Items are roughly tau-equivalent (all items make equal
+contributions to the underlying factor)</p></li>
+<li><p>You want a simple baseline estimate</p></li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li><p>Assumes equal factor loadings</p></li>
+<li><p>Can underestimate reliability when loadings differ</p></li>
+<li><p>Sensitive to the number of items</p></li>
+</ul>
+<p>Alpha should be viewed as a descriptive lower bound, not a definitive
+measure of internal consistency.</p>
+</div>
+<div id="mcdonalds-omega-omega" class="section level4">
+<h4>McDonald’s omega (<span class="math inline">\(\omega\)</span>)</h4>
+<p>McDonald’s omega estimates the proportion of variance attributable to
+a single common factor, allowing items to have different loadings.</p>
+<p>Use omega when:</p>
+<ul>
+<li><p>Items vary in strength or discrimination</p></li>
+<li><p>You want a model-based reliability estimate</p></li>
+<li><p>A single factor is theoretically justified</p></li>
+</ul>
+<p>Advantages:</p>
+<ul>
+<li><p>Fewer restrictive assumptions than alpha</p></li>
+<li><p>Better behaved in simulations</p></li>
+<li><p>Increasingly recommended in methodological literature</p></li>
+</ul>
+<p>As a general rule, omega is preferred to alpha for single-factor
+scales when factor loadings are unequal.</p>
+</div>
+<div id="where-does-guttmans-lambda_6-fit" class="section level4">
+<h4>Where does Guttman’s <span class="math inline">\(\lambda_6\)</span>
+fit?</h4>
+<p>Guttman’s lambda-6 (<span class="math inline">\(\lambda_6\)</span>)
+is a lower-bound estimate of reliability that relaxes Cronbach’s
+assumption of equal error variances across items.</p>
+<p>Use <span class="math inline">\(\lambda_6\)</span> when:</p>
+<ul>
+<li>You want a reliability estimate that is:
+<ul>
+<li>more defensible than <span class="math inline">\(\alpha\)</span>,</li>
+<li>but does not rely on a factor model</li>
+</ul></li>
+<li>You are comparing multiple lower-bound estimates</li>
+<li>You want a conservative benchmark alongside <span class="math inline">\(\omega\)</span></li>
+</ul>
+<p>Key points:</p>
+<ul>
+<li><span class="math inline">\(\lambda_6\)</span> is always <span class="math inline">\(\geqslant\)</span> <span class="math inline">\(\alpha\)</span> for the same data</li>
+<li>Like <span class="math inline">\(\alpha\)</span>, it is a lower
+bound — not an estimate of true reliability</li>
+<li>Unlike <span class="math inline">\(\omega\)</span>, it does not
+assume a latent factor structure</li>
+</ul>
+<p>In practice, <span class="math inline">\(\lambda_6\)</span> is most
+useful when reported <strong>alongside <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\omega\)</span></strong> to show how sensitive
+conclusions are to different reliability assumptions.</p>
+</div>
+</div>
+<div id="step-3-when-should-i-use-ordinal-reliability" class="section level3">
+<h3>Step 3: When should I use ordinal reliability?</h3>
+<p>Ordinal reliability coefficients are computed from polychoric
+correlations, which estimate associations between latent continuous
+variables underlying ordinal responses.</p>
+<p>In reliability(), these correspond to:</p>
+<ul>
+<li><p>Ordinal alpha (often called <em>Zumbo’s alpha</em>)</p></li>
+<li><p>Ordinal omega</p></li>
+</ul>
+<p>Use ordinal reliability when:</p>
+<ul>
+<li><p>Items are ordinal (e.g., 5- or 7-point Likert scales)</p></li>
+<li><p>Response distributions are skewed or uneven</p></li>
+<li><p>You wish to respect the ordinal measurement scale</p></li>
+</ul>
+<p>Important caveats:</p>
+<ul>
+<li><p>Polychoric correlations require sufficient observations per
+category</p></li>
+<li><p>Sparse categories can cause estimation failure</p></li>
+<li><p>Diagnostics should always be inspected</p></li>
+</ul>
+<p>If ordinal estimation is not feasible, reliability() reports this
+transparently and falls back to Pearson-based estimates.</p>
+</div>
+<div id="step-4-alpha-vs-omega-vs-ordinal-omega-a-practical-summary" class="section level3">
+<h3>Step 4: <span class="math inline">\(\alpha\)</span> vs <span class="math inline">\(\omega\)</span> vs ordinal <span class="math inline">\(\omega\)</span> — a practical summary</h3>
+<!-- | Situation | Recommended coefficient | -->
+<!-- |----------|--------------------------| -->
+<!-- | Legacy comparison, simple reporting | $\alpha$ | -->
+<!-- | Single-factor scale, unequal loadings | $\omega$ | -->
+<!-- | Strength of general factor | $\omega_h$ | -->
+<!-- | Likert items with skew or ceiling effects | Ordinal $\omega$ | -->
+<!-- | Teaching or demonstration | $\alpha$ *and* $\omega$ | -->
+<!-- | Ordinal data, small samples or sparse categories | $\omega$ (Pearson-based) | -->
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Situation
+</th>
+<th style="text-align:left;">
+Recommended.coefficient
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 60%; ">
+Legacy comparison, simple reporting
+</td>
+<td style="text-align:left;width: 40%; ">
+<span class="math inline">\(\alpha\)</span>, Cronbach’s alpha
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 60%; ">
+Single-factor scale, unequal loadings
+</td>
+<td style="text-align:left;width: 40%; ">
+<span class="math inline">\(\omega\)</span>, McDonalds omega
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 60%; ">
+Strength of general factor
+</td>
+<td style="text-align:left;width: 40%; ">
+<span class="math inline">\(\omega_h\)</span>, Coefficient H
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 60%; ">
+Likert items with skew or ceiling effects
+</td>
+<td style="text-align:left;width: 40%; ">
+Ordinal <span class="math inline">\(\omega\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 60%; ">
+Teaching or demonstration
+</td>
+<td style="text-align:left;width: 40%; ">
+<span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\omega\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 60%; ">
+Ordinal data, small samples or sparse categories
+</td>
+<td style="text-align:left;width: 40%; ">
+<span class="math inline">\(\omega\)</span> (Pearson-based)
+</td>
+</tr>
+</tbody>
+</table>
+<p>When in doubt:</p>
+<pre><code>Report omega, and optionally alpha for comparison.</code></pre>
+<p>If your data are clearly ordinal and diagnostics permit:</p>
+<pre><code>Ordinal omega is the most defensible choice.
+
+“ordinal $\omega$” refers to omega total computed from the 
+polychoric correlation matrix.</code></pre>
+</div>
+<div id="step-5-confidence-intervals" class="section level3">
+<h3>Step 5: Confidence intervals</h3>
+<p>When <code>ci = TRUE</code>, LikertMakeR computes nonparametric
+bootstrap confidence intervals.</p>
+<p>Why bootstrap?</p>
+<ul>
+<li><p>No closed-form CI exists for omega</p></li>
+<li><p>Ordinal reliability has no reliable analytic CI</p></li>
+<li><p>Bootstrap intervals are flexible and robust</p></li>
+</ul>
+<p>Practical advice:</p>
+<ul>
+<li><p>Use at least 1,000 resamples for stable intervals</p></li>
+<li><p>Expect longer runtimes for ordinal bootstraps</p></li>
+<li><p>Always report the method used to compute CIs</p></li>
+</ul>
+<p>Confidence intervals are intentionally <strong>not provided</strong>
+for <span class="math inline">\(\omega_h\)</span>, as it represents a
+model-based upper bound on reliability rather than an inferential
+estimate.</p>
+</div>
+</div>
+<div id="recommended-reading" class="section level2">
+<h2>Recommended reading</h2>
+<ul>
+<li>For readers who want to go a little deeper</li>
+</ul>
+<p>If you use reliability() for teaching or applied research, the
+following sources provide accessible explanations of the ideas behind
+the coefficients reported here.</p>
+<div id="understanding-cronbachs-alpha-and-its-limitations" class="section level3">
+<h3>Understanding Cronbach’s alpha and its limitations</h3>
+<ul>
+<li><p>Cronbach, L. J. (1951). <em>Coefficient alpha and the internal
+structure of tests.</em> (<span class="citation">Cronbach (<a href="#ref-cronbach1951">1951</a>)</span>)<br />
+The original source for alpha; still worth reading to understand what
+alpha does—and does not—measure.</p></li>
+<li><p>Revelle, W., &amp; Zinbarg, R. E. (2009). <em>Coefficients alpha,
+beta, omega, and the glb.</em> (<span class="citation">Revelle and
+Zinbarg (<a href="#ref-revelle2009">2009</a>)</span>)<br />
+A clear discussion of why alpha can be misleading and when omega is
+preferable.</p></li>
+</ul>
+</div>
+<div id="omega-and-factor-based-reliability" class="section level3">
+<h3>Omega and factor-based reliability</h3>
+<ul>
+<li><p>McDonald, R. P. (1999). <em>Test theory: A unified
+treatment.</em> (<span class="citation">McDonald (<a href="#ref-mcdonald2013test">2013</a>)</span>)<br />
+The definitive reference for omega; recommended for readers comfortable
+with factor analysis concepts.</p></li>
+<li><p>Hancock, G. R., &amp; Mueller, R. O. (2001). <em>Rethinking
+construct reliability within latent variable systems.</em> (<span class="citation">Hancock and Mueller (<a href="#ref-hancock2001">2001</a>)</span>)<br />
+Introduces Coefficient H and discusses its interpretation as factor
+determinacy rather than observed-score reliability.</p></li>
+</ul>
+</div>
+<div id="comparative-studies" class="section level3">
+<h3>Comparative studies</h3>
+<ul>
+<li>Xiao L, Hau KT. (2022). <em>Performance of Coefficient Alpha and Its
+Alternatives: Effects of Different Types of Non-Normality.</em> (<span class="citation">Xiao and Hau (<a href="#ref-xiao2023">2023</a>)</span>)</li>
+</ul>
+</div>
+<div id="ordinal-reliability-for-likert-type-data" class="section level3">
+<h3>Ordinal reliability for Likert-type data</h3>
+<ul>
+<li><p>Zumbo, B. D., Gadermann, A. M., &amp; Zeisser, C. (2007).
+<em>Ordinal versions of coefficients alpha and theta for Likert rating
+scales.</em> (<span class="citation">Zumbo, Gadermann, and Zeisser (<a href="#ref-zumbo2007">2007</a>)</span>)<br />
+Introduces ordinal (polychoric-based) alpha—often called Zumbo’s
+alpha.</p></li>
+<li><p>Gadermann, A. M., Guhn, M., &amp; Zumbo, B. D. (2012).
+<em>Estimating ordinal reliability for Likert-type and ordinal item
+response data.</em> (<span class="citation">Gadermann, Guhn, and Zumbo
+(<a href="#ref-gadermann2012">2012</a>)</span>)<br />
+A practical, non-technical guide that is especially suitable for
+teaching.</p></li>
+</ul>
+</div>
+<div id="polychoric-correlations-in-practice" class="section level3">
+<h3>Polychoric correlations in practice</h3>
+<ul>
+<li>Holgado–Tello, F. P., et al. (2010). <em>Polychoric versus Pearson
+correlations in factor analysis of ordinal variables.</em> (<span class="citation">Holgado–Tello et al. (<a href="#ref-holgado2010">2010</a>)</span>)<br />
+A helpful applied comparison explaining why Pearson correlations can
+distort analyses of Likert-type data.</li>
+</ul>
+</div>
+</div>
+<div id="teaching-tip" class="section level2">
+<h2>Teaching tip</h2>
+<p>For most classroom examples, start with Pearson-based alpha and
+omega. Introduce ordinal reliability only after students understand:</p>
+<ol style="list-style-type: lower-alpha">
+<li>factor models, and</li>
+<li>why Likert responses are not truly continuous.</li>
+</ol>
+<p>This mirrors the progressive structure used in reliability() and
+helps students see why additional assumptions are required for ordinal
+methods.</p>
+</div>
+<div id="citations" class="section level2 unnumbered">
+<h2 class="unnumbered">Citations</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-cronbach1951" class="csl-entry">
+Cronbach, Lee J. 1951. <span>“Coefficient Alpha and the Internal
+Structure of Tests.”</span> <em>Psychometrika</em> 16 (3): 297–334.
+</div>
+<div id="ref-gadermann2012" class="csl-entry">
+Gadermann, Anne M, Martin Guhn, and Bruno D Zumbo. 2012.
+<span>“Estimating Ordinal Reliability for Likert-Type and Ordinal Item
+Response Data: A Conceptual, Empirical, and Practical Guide.”</span>
+<em>Practical Assessment, Research &amp; Evaluation</em> 17 (3): n3.
+</div>
+<div id="ref-hancock2001" class="csl-entry">
+Hancock, Gregory R, and Ralph O Mueller. 2001. <span>“Rethinking
+Construct Reliability Within Latent Variable Systems.”</span>
+<em>Structural Equation Modeling: Present and Future</em> 195 (216):
+60–70.
+</div>
+<div id="ref-holgado2010" class="csl-entry">
+Holgado–Tello, Francisco Pablo, Salvador Chacón–Moscoso, Isabel
+Barbero–Garcı́a, and Enrique Vila–Abad. 2010. <span>“Polychoric Versus
+Pearson Correlations in Exploratory and Confirmatory Factor Analysis of
+Ordinal Variables.”</span> <em>Quality &amp; Quantity</em> 44 (1):
+153–66.
+</div>
+<div id="ref-mcdonald2013test" class="csl-entry">
+McDonald, Roderick P. 2013. <em>Test Theory: A Unified Treatment</em>.
+psychology press.
+</div>
+<div id="ref-revelle2009" class="csl-entry">
+Revelle, William, and Richard E Zinbarg. 2009. <span>“Coefficients
+Alpha, Beta, Omega, and the Glb: Comments on Sijtsma.”</span>
+<em>Psychometrika</em> 74 (1): 145–54.
+</div>
+<div id="ref-xiao2023" class="csl-entry">
+Xiao, Leifeng, and Kit-Tai Hau. 2023. <span>“Performance of Coefficient
+Alpha and Its Alternatives: Effects of Different Types of
+Non-Normality.”</span> <em>Educational and Psychological
+Measurement</em> 83 (1): 5–27.
+</div>
+<div id="ref-zumbo2007" class="csl-entry">
+Zumbo, Bruno D, Anne M Gadermann, and Cornelia Zeisser. 2007.
+<span>“Ordinal Versions of Coefficients Alpha and Theta for Likert
+Rating Scales.”</span> <em>Journal of Modern Applied Statistical
+Methods</em> 6 (1): 4.
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
