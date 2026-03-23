@@ -1,5 +1,109 @@
 # LikertMakeR (development version)
 
+# LikertMakeR 2.0.0 (March 2026)
+
+This release introduces major improvements to the internal algorithms used
+to generate synthetic rating-scale data and correlation matrices.
+
+## Breaking changes
+
+  - `makeItemsScale()` has been rewritten and one parameter has been removed. 
+  Existing code that used the removed argument, `variance`, 
+  will need to be updated.
+
+  - `makeCorrAlpha()` has been completely redesigned - previously flagged in 
+  `development version 1.5.0`.
+  Some parameters have changed, and the internal algorithm for generating 
+  correlation matrices has been replaced to guarantee an assumed underlying 
+  single-factor structure.
+
+## New features
+
+  - Added `reliability()`, a new function for computing reliability statistics 
+  for rating-scale data - previously flagged in `development version 1.5.0`.
+  
+  - Added `alpha_sensitivity()`, a new function that computes how 
+  Cronbach's alpha changes as a function of scale design parameters.
+
+## Improvements
+
+  - `makeCorrAlpha()` is now substantially faster and more stable when 
+  generating correlation matrices that satisfy a target Cronbach's alpha.
+  
+  - `alpha()` has additional integrity checks
+
+  - Improved numerical stability and diagnostics in correlation-matrix 
+  generation.
+
+  - Various documentation improvements and code cleanup.
+
+
+
+# LikertMakeR 1.5.0 (February 2026)
+
+## Improvements
+
+### Major Improvements to `makeCorrAlpha()`
+
+#### New constructive correlation generator
+
+`makeCorrAlpha()` has been completely re-engineered. The previous swap-based approach for achieving positive-definite correlation matrices has been replaced with a constructive one-factor generator.
+
+The previous algorithm:
+
+- was slow
+- was unable to process large number of items (rare, but sometimes wanted)
+- frequently gave results that were more consistent with multi-factor scales
+   * e.g., eigenvalues may give two or more values > 1, 
+
+
+The new algorithm:
+
+- runs more than 150 times faster than the previous version (3000 times faster for large k).
+- Guarantees positive definiteness without post-hoc repair.
+- Produces stable behaviour across large numbers of items (tested up to k = 40).
+- Maintains alpha accuracy within ±0.005 when `alpha_noise = 0`.
+- Uses adaptive dispersion control to ensure feasibility at high variance levels.
+
+This results in substantially improved numerical stability and smoother behaviour across the parameter space.
+
+
+#### `precision` argument removed and replaced with `alpha_noise` argument
+
+A new argument, `alpha_noise`, has been introduced to provide optional random variation around the requested Cronbach’s alpha. 
+
+By default (alpha_noise = 0), the function reproduces the specified alpha deterministically. 
+When a small positive value is supplied, the function will generate slightly different reliability values across runs. 
+
+This is particularly useful in teaching and simulation contexts where you may wish to demonstrate natural variation rather than produce the exact same matrix each time. The noise is applied in a way that ensures the resulting alpha always remains within valid bounds.
+
+
+#### Deprecated argument
+
+- `sort_cors` is now deprecated. It served no useful purpose.
+
+
+#### Backward compatibility
+
+For most use cases, behaviour remains consistent with previous versions. 
+However, users who relied on the previous swap-based construction may observe smoother and more stable correlation structures under the new implementation.
+
+### `summated` parameter added to `makeItemsScale()` function
+
+Added to specify whether the given scale is a summated scale (e.g. 4-20 in integer increments for four 5-point items) or an averaged scale (e.g., 1-5 in 0.25 increments). 
+
+## Maintenance
+
+- Tutorials added to the website
+
+  * infographic to be removed from CRAN
+  
+  * blog_01 (quick-start tutorial) generates a dataframe.
+  
+  * blog_2 (t-test tutorial) "reproduces"" published data, runs t-test, effect-sizes, and visualisation. 
+
+---
+
 # LikertMakeR 1.4.0 (February 2026)
 
 ## Improvements
@@ -33,6 +137,9 @@
 - removed redundant `makeItems()` function
 
 - reduced length of **README** file and moved most content to vignettes
+
+
+
 
 
 # LikertMakeR 1.3.0 (2025-11-24)

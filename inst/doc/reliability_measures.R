@@ -11,7 +11,6 @@ knitr::opts_chunk$set(
 # library(tidyr)
 library(LikertMakeR)
 
-
 ## -----------------------------------------------------------------------------
 # reliability(
 #   data,
@@ -26,7 +25,7 @@ library(LikertMakeR)
 # )
 
 ## -----------------------------------------------------------------------------
-# include = c("lambda6", "polychoric")
+# include <- c("lambda6", "polychoric")
 
 ## -----------------------------------------------------------------------------
 # ordinal_diagnostics(result)
@@ -69,7 +68,7 @@ decision_table <- data.frame(
   Situation = c(
     "Legacy comparison, simple reporting",
     "Single-factor scale, unequal loadings",
-    "Strength of general factor", 
+    "Strength of general factor",
     "Likert items with skew or ceiling effects",
     "Teaching or demonstration",
     "Ordinal data, small samples or sparse categories"
@@ -77,7 +76,7 @@ decision_table <- data.frame(
   `Recommended coefficient` = c(
     "$\\alpha$, Cronbach's alpha",
     "$\\omega$, McDonalds omega",
-    "$\\omega_h$, Coefficient H", 
+    "$\\omega_h$, Coefficient H",
     "Ordinal $\\omega$",
     "$\\alpha$ and $\\omega$",
     "$\\omega$ (Pearson-based)"

@@ -684,7 +684,7 @@ polychoric correlations:</p>
 </ul></li>
 </ul>
 <p>Multiple options may be supplied, for example:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>include <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;lambda6&quot;</span>, <span class="st">&quot;polychoric&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>include <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;lambda6&quot;</span>, <span class="st">&quot;polychoric&quot;</span>)</span></code></pre></div>
 </div>
 <div id="ci" class="section level3">
 <h3><code>ci</code></h3>
@@ -846,29 +846,28 @@ target Cronbach’s alpha of 0.80, using functions from
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">items =</span> <span class="dv">4</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="fl">0.80</span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>)</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; reached max iterations (1600) - best mean difference: 8.3e-05</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co"># example correlated dataframe</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> LikertMakeR<span class="sc">::</span><span class="fu">makeScales</span>(</span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">64</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="at">means =</span> <span class="fu">c</span>(<span class="fl">2.75</span>, <span class="fl">3.00</span>, <span class="fl">3.25</span>, <span class="fl">3.50</span>),</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">sds =</span> <span class="fu">c</span>(<span class="fl">1.25</span>, <span class="fl">1.50</span>, <span class="fl">1.30</span>, <span class="fl">1.25</span>),</span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="at">lowerbound =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">4</span>),</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">upperbound =</span> <span class="fu">rep</span>(<span class="dv">5</span>, <span class="dv">4</span>),</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="at">cormatrix =</span> my_cor</span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>)</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; Variable  1 :  item01  -</span></span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; Variable  2 :  item02  -</span></span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; best solution in 1028 iterations</span></span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; Variable  3 :  item03  -</span></span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; Variable  4 :  item04  -</span></span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; Arranging data to match correlations</span></span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co">#&gt; Successfully generated correlated variables</span></span></code></pre></div>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># example correlated dataframe</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> LikertMakeR<span class="sc">::</span><span class="fu">makeScales</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">64</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">means =</span> <span class="fu">c</span>(<span class="fl">2.75</span>, <span class="fl">3.00</span>, <span class="fl">3.25</span>, <span class="fl">3.50</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="at">sds =</span> <span class="fu">c</span>(<span class="fl">1.25</span>, <span class="fl">1.50</span>, <span class="fl">1.30</span>, <span class="fl">1.25</span>),</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">lowerbound =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">4</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="at">upperbound =</span> <span class="fu">rep</span>(<span class="dv">5</span>, <span class="dv">4</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">cormatrix =</span> my_cor</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>)</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; Variable  1 :  item01  -</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; Variable  2 :  item02  -</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co">#&gt; best solution in 1488 iterations</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co">#&gt; Variable  3 :  item03  -</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co">#&gt; Variable  4 :  item04  -</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co">#&gt; reached maximum of 4096 iterations</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co">#&gt; Arranging data to match correlations</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co">#&gt; Successfully generated correlated variables</span></span></code></pre></div>
 </div>
 <div id="basic-reliability-estimates" class="section level3">
 <h3>Basic reliability estimates</h3>
@@ -895,10 +894,10 @@ factor.</p>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;            coef_name estimate n_items n_obs</span></span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;                alpha    0.800       4    64</span></span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;          omega_total    0.870       4    64</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;              lambda6    0.842       4    64</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;              omega_h    0.805       4    64</span></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;        ordinal_alpha    0.750       4    64</span></span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;  ordinal_omega_total    0.843       4    64</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;              lambda6    0.757       4    64</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;              omega_h    0.804       4    64</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;        ordinal_alpha    0.766       4    64</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;  ordinal_omega_total    0.851       4    64</span></span>
 <span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;                                                notes</span></span>
 <span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt;                                 Pearson correlations</span></span>
 <span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt;                                 1-factor eigen omega</span></span>

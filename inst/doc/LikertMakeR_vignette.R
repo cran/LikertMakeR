@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ## ----setup, echo=FALSE--------------------------------------------------------
 library(LikertMakeR)
 
-## ----logo, fig.align='center', echo=FALSE, out.width = '25%'------------------
+## ----logo, fig.align='center', echo=FALSE, out.width = '20%'------------------
 knitr::include_graphics("img/LikertMakeR_3.png")
 
 ## ----skew, fig.align='center', echo=FALSE, out.width = '85%', fig.cap="Off-centre means always give skewed distribution in bounded rating scales"----
@@ -102,7 +102,6 @@ cor(new3) |> round(3)
 ## define parameters
 items <- 4
 alpha <- 0.85
-# variance <- 0.5 ## by default
 
 ## apply makeCorrAlpha() function
 set.seed(42)
@@ -121,27 +120,6 @@ alpha(cor_matrix_4)
 ## using helper function eigenvalues()
 
 eigenvalues(cor_matrix_4, 1)
-
-## ----cor_matrix_12, message=FALSE---------------------------------------------
-## define parameters
-items <- 12
-alpha <- 0.90
-variance <- 1.0
-
-## apply makeCorrAlpha() function
-set.seed(42)
-
-cor_matrix_12 <- makeCorrAlpha(items = items, alpha = alpha, variance = variance)
-
-## ----cor_matrix_12Print, echo = FALSE-----------------------------------------
-cor_matrix_12 |> round(2)
-
-## ----fig4, fig.height=4, fig.width=5, fig.align='center', echo = TRUE, crop = TRUE----
-## calculate Cronbach's Alpha
-alpha(cor_matrix_12)
-
-## calculate eigenvalues of the correlation matrix
-eigenvalues(cor_matrix_12, 1) |> round(3)
 
 ## ----cor_matrix_d-------------------------------------------------------------
 ## apply makeCorrAlpha() with diagnostics
@@ -215,7 +193,6 @@ round(orthogonalItemCors, 2)
 eigenvalues(cormatrix = orthogonalItemCors, scree = TRUE)
 
 ## ----makeScalesExample1-------------------------------------------------------
-
 ## define parameters
 n <- 128
 dfMeans <- c(2.5, 3.0, 3.0, 3.5)
@@ -248,12 +225,10 @@ df <- makeScales(
 )
 
 ## ----str_makeScalesExample1---------------------------------------------------
-
 ## test the function
 str(df)
 
 ## ----moments_makeScalesExample1-----------------------------------------------
-
 ### means should be correct to two decimal places
 dfmoments <- data.frame(
   mean = apply(df, 2, mean) |> round(3),
@@ -263,7 +238,6 @@ dfmoments <- data.frame(
 dfmoments
 
 ## ----cors_makeScalesExample1--------------------------------------------------
-
 ### correlations should be correct to two decimal places
 cor(df) |> round(3)
 
@@ -480,29 +454,6 @@ alpha(data = newItems_2) |> round(4)
 
 ### calculate eigenvalues and print scree plot
 eigenvalues(cor(newItems_2), 1) |> round(3)
-
-## ----makeItemsScale_example_3, fig.height=4, fig.width=5, fig.align='center', crop = TRUE----
-## apply makeItemsScale() function
-newItems_3 <- makeItemsScale(
-  scale = summatedScale,
-  lowerbound = lowerbound,
-  upperbound = upperbound,
-  items = items,
-  alpha = 0.6,
-  variance = 0.7
-)
-
-### First 10 observations and summated scale
-head(cbind(newItems_3, summatedScale), 10)
-
-### correlation matrix
-cor(newItems_3) |> round(2)
-
-### requested Cronbach's alpha = 0.70
-alpha(data = newItems_3) |> round(4)
-
-### calculate eigenvalues and print scree plot
-eigenvalues(cor(newItems_3), 1) |> round(3)
 
 ## ----independent-samples_t-test, echo = TRUE----------------------------------
 ## define parameters
@@ -841,7 +792,6 @@ evals <- eigenvalues(correlationMatrix, 1)
 print(evals)
 
 ## ----reliabilityExample, warning=FALSE, message=FALSE-------------------------
-
 ## create dataset
 my_cor <- LikertMakeR::makeCorrAlpha(
   items = 4,
@@ -873,7 +823,6 @@ reliability(
   ci = TRUE,
   n_boot = 64
 )
-
 
 ## ----eval = FALSE-------------------------------------------------------------
 # n <- 128

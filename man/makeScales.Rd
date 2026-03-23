@@ -34,10 +34,11 @@ between -1 and +1, and '1' in the diagonal.}
 a dataframe of rating-scale values
 }
 \description{
-\code{makeScales()} generates a dataframe of random discrete
+Generates a dataframe of random discrete
 values so the data replicate a rating scale,
 and are correlated close to a predefined correlation matrix.
-
+}
+\details{
 \code{makeScales()} is wrapper function for:
 \itemize{
 \item \code{\link[=lfast]{lfast()}}, generates a dataframe that best fits the desired
@@ -91,7 +92,6 @@ apply(df1, 2, sd) |> round(3)
 
 #### correlations
 cor(df1) |> round(3)
-
 
 
 ## Example 2: five correlated Likert scales
@@ -148,4 +148,7 @@ apply(df2, 2, sd) |> round(3)
 #### correlations
 cor(df2) |> round(3)
 
+}
+\seealso{
+\code{\link{lfast}}, \code{\link{lcor}}
 }

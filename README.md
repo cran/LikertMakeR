@@ -10,8 +10,12 @@
 
 # LikertMakeR <img src="man/figures/logo.png" align="right" height="134" alt="LikertMakeR" />
 
-**LikertMakeR** synthesises Likert-scale and related bounded rating-scale data with
-predefined *means*, *standard deviations*, and (optionally) *correlations*, *Cronbach’s alpha*, and *factor-loading-based structure*.
+**LikertMakeR** synthesises Likert-scale and related bounded rating-scale data 
+with predefined *means*, *standard deviations*, *correlations*,
+*Cronbach’s alpha*, and *factor-loading-based structure* for simulation 
+studies, teaching, and methodological research..
+
+Version 2.0.0 (March 2026)
 
 ## Purpose
 
@@ -109,7 +113,7 @@ that are determined to be moderately-to-highly correlated among each other,
 and capturing various facets of a theoretical construct.
 
 > ### NOTE   
-> A single 1-5 rating scale is **_NOT_** a Likert scale - it may be a Likert-scale item.
+> A single 1-5 rating scale is **_NOT_** a true Likert scale - it may be a Likert-scale item.
     
 Summated rating scales are not continuous or unbounded.
 For example, a 5-point Likert scale that is constructed with, say, 
@@ -145,21 +149,7 @@ ____
 
 #### APA:
 
-     Winzar, H. (2025). LikertMakeR (version 1.4.0) [R package]. 
+     Winzar, H. (2026). LikertMakeR (version 2.0.0) [R package]. 
      The Comprehensive R Archive Network (CRAN),
     <https://CRAN.R-project.org/package=LikertMakeR>
         
-#### BIB:    
-
-    @software{winzar2025},
-     title = {LikertMakeR},
-     author = {Winzar, Hume},
-     abstract = {LikertMakeR synthesises and correlates rating-scale data with predefined means and standard deviations.},
-     publisher = {The Comprehensive R Archive Network (CRAN)},
-     month = dec,
-     year = {2025},
-     version = {1.4.0},
-     origdate = {2022},
-     url = {https://CRAN.R-project.org/package=LikertMakeR},
-     note = {R package}
-    }

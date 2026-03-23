@@ -1,9 +1,8 @@
 #' Synthesise rating-scale data with given first and second moments and a
 #' predefined correlation matrix
 #'
-#' @name makeScales
 #'
-#' @description `makeScales()` generates a dataframe of random discrete
+#' Generates a dataframe of random discrete
 #'  values so the data replicate a rating scale,
 #'  and are correlated close to a predefined correlation matrix.
 #'
@@ -32,6 +31,7 @@
 #'
 #' @return a dataframe of rating-scale values
 #'
+#' @seealso \code{\link{lfast}}, \code{\link{lcor}}
 #'
 #' @examples
 #'
@@ -78,7 +78,6 @@
 #'
 #' #### correlations
 #' cor(df1) |> round(3)
-#'
 #'
 #'
 #' ## Example 2: five correlated Likert scales
