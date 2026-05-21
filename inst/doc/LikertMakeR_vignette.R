@@ -376,75 +376,42 @@ pairs(myItems,
   diag.panel = panel.hist
 )
 
-## ----generate_summated_scale--------------------------------------------------
-## define parameters
-n <- 256
-mean <- 3.00
-sd <- 0.85
-lowerbound <- 1
-upperbound <- 5
-items <- 4
-
-## apply lfast() function
-meanScale <- lfast(
-  n = n, mean = mean, sd = sd,
-  lowerbound = lowerbound, upperbound = upperbound,
-  items = items
-)
-
-## sum over all items
-summatedScale <- meanScale * items
-
-## ----summatedScale_histogram, echo=FALSE, fig.height=4, fig.width=5, fig.align='center', crop = TRUE, fig.cap="Summated scale distribution"----
-## Histogram of summated scale
-
-hist(summatedScale,
-  cex.axis = 0.5, cex.main = 0.75,
-  breaks = seq(
-    from = ((lowerbound * items) - 0.5),
-    to = ((upperbound * items) + 0.5), by = 1
-  ),
-  col = "skyblue", xlab = NULL, ylab = NULL,
-  main = paste0(
-    "mu=", round(mean * items, 2), ", sd=", round(sd * items, 2), ", range:",
-    (lowerbound * items), ":", (upperbound * items)
-  )
-)
-
 ## ----makeItemsScale_example_1, fig.height=4, fig.width=5, fig.align='center', crop = TRUE----
+summatedScale <- c(11, 8, 14, 12, 9, 12, 10, 9, 8, 18, 16, 16, 14, 8, 15, 12)
+
 ## apply makeItemsScale() function
 
-newItems_1 <- makeItemsScale(
+newItems <- makeItemsScale(
   scale = summatedScale,
-  lowerbound = lowerbound,
-  upperbound = upperbound,
-  items = items
+  lowerbound = 1,
+  upperbound = 5,
+  items = 4
 )
 
-### First 10 observations and summated scale
-head(cbind(newItems_1, summatedScale), 10)
+###  observations and summated scale
+head(cbind(newItems, summatedScale), 16)
 
 ### correlation matrix
-cor(newItems_1) |> round(2)
+cor(newItems) |> round(2)
 
 ### default Cronbach's alpha = 0.80
-alpha(data = newItems_1) |> round(4)
+alpha(data = newItems) |> round(4)
 
 ### calculate eigenvalues and print scree plot
-eigenvalues(cor(newItems_1), 1) |> round(3)
+eigenvalues(cor(newItems), 1) |> round(3)
 
 ## ----makeItemsScale_example_2, fig.height=4, fig.width=5, fig.align='center', crop = TRUE----
 ## apply makeItemsScale() function
 newItems_2 <- makeItemsScale(
   scale = summatedScale,
-  lowerbound = lowerbound,
-  upperbound = upperbound,
-  items = items,
+  lowerbound = 1,
+  upperbound = 5,
+  items = 4,
   alpha = 0.9
 )
 
-### First 10 observations and summated scale
-head(cbind(newItems_2, summatedScale), 10)
+### observations and summated scale
+head(cbind(newItems_2, summatedScale), 16)
 
 ### correlation matrix
 cor(newItems_2) |> round(2)

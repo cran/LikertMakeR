@@ -2,8 +2,8 @@ Type: Package
 Package: LikertMakeR
 Title: Synthesise and Correlate Likert Scale and Rating-Scale Data
         Based on Summary Statistics
-Version: 2.0.0
-Date: 2026-03-15
+Version: 2.3.0
+Date: 2026-04-28
 Authors@R: 
     person("Hume", "Winzar", , "winzar@gmail.com", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0001-7475-2641"))
@@ -19,13 +19,14 @@ Description: Generate and correlate synthetic Likert and rating-scale
     <https://winzarh.github.io/LikertMakeR/>. 
 License: MIT + file LICENSE
 URL: https://github.com/WinzarH/LikertMakeR/,
-        https://winzarh.github.io/LikertMakeR/
+        https://winzarh.github.io/LikertMakeR/,
+        https://github.com/WinzarH/LikertMakeR
 BugReports: https://github.com/WinzarH/LikertMakeR/issues
 Depends: R (>= 4.2.0)
-Imports: dplyr, Matrix, matrixStats, Rcpp, stats, tibble, rlang
-Suggests: effectsize, kableExtra, knitr, ggplot2, ggrepel, gtools,
-        psych, polycor, psychTools, rmarkdown, testthat (>= 3.0.0),
-        tidyr
+Imports: dplyr, gtools, Matrix, matrixStats, Rcpp, stats, tibble,
+        utils,
+Suggests: effectsize, kableExtra, knitr, ggplot2, ggrepel, psych,
+        polycor, psychTools, rmarkdown, testthat (>= 3.0.0), tidyr
 LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr
 Config/Needs/website: dplyr, effectsize, ggplot2, kableExtra, lavaan,
@@ -34,10 +35,10 @@ Config/Needs/website: dplyr, effectsize, ggplot2, kableExtra, lavaan,
 Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-GB
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: yes
-Packaged: 2026-03-22 00:00:19 UTC; winza
+Packaged: 2026-05-21 03:35:24 UTC; winza
 Author: Hume Winzar [cre, aut] (ORCID: <https://orcid.org/0000-0001-7475-2641>)
 Maintainer: Hume Winzar <winzar@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-03-23 08:40:35 UTC
+Date/Publication: 2026-05-21 04:10:02 UTC
